@@ -6,13 +6,13 @@ import { dummyProject } from "./utils/constants";
 
 function App() {
   return (
-    <main>
+    <main className="bg-[#111111] w-[100vw] min-h-[100vh]">
       <Navbar />
       <img className={"fixed top-0 -z-10"} src={shading} alt="shading" />
 
       {/* <Unstake /> */}
       {/* <Stake /> */}
-      <ProjectCard project={dummyProject} />
+      {/* <ProjectCard project={dummyProject} /> */}
     </main>
   );
 }

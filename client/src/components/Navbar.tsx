@@ -2,19 +2,15 @@ import { ConnectButton } from "arweave-wallet-kit";
 
 export default function Navbar() {
   return (
-    <>
-      <nav className="flex justify-between my-2 mx-2 align-middle items-center">
-        <a href="/">
-          <div>logo</div>
-        </a>
-        <div className="flex gap-8">
-          <a href="/about">About Us</a>
-          <a href="/profile">Your Profile</a>
-        </div>
-        <ConnectButton />
-      </nav>
-      {/* horizontal line, bold */}
-      <hr className="my-4 border-t-2 border-black" />
-    </>
+    <nav className="flex justify-between items-center px-20 pt-[12px]">
+      <a href="/">
+        <h1 className="text-[#eeeeee] uppercase text-[24px] font-bold">logo</h1>
+      </a>
+      <div className="flex gap-9 text-[#eeeeee]">
+        <a href="/about">About Us</a>
+        <a href="/profile">Your Profile</a>
+      </div>
+      <ConnectButton />
+    </nav>
   );
 }

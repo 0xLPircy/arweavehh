@@ -85,6 +85,7 @@ Handlers.add(
         return msg.Action == "Credit-Notice" and msg["X-Action"] == "User-to-Platform"
     end,
     function(msg)
+        print("entered u to p")
         local tags = msg.Tags
 
         local projectID = utils.find(function(val) return val.ticker == tags["X-Ticker"] end)(PROJECTS).proces
