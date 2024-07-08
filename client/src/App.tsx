@@ -1,27 +1,18 @@
-import { ConnectButton, useConnection } from "arweave-wallet-kit";
+import shading from "/homeShading.svg";
 import "./App.css";
-import signArSend from "./utils/aoCalls";
+import Navbar from "./components/Navbar";
+import ProjectCard from "./components/ProjectCard";
+import { dummyProject } from "./utils/constants";
 
 function App() {
-  const { connected } = useConnection();
-  const sendArHandler = async () => {
-    await signArSend();
-  };
   return (
     <main>
-      <ConnectButton />
-      {connected ? (
-        <div
-          onClick={() => {
-            sendArHandler();
-          }}
-          className="hover:cursor-pointer bg-[#000000] text-[#eeeeee] rounded-md px-[12px] py-[4px] w-fit"
-        >
-          Sign
-        </div>
-      ) : (
-        "connect"
-      )}
+      <Navbar />
+      <img className={"fixed top-0 -z-10"} src={shading} alt="shading" />
+
+      {/* <Unstake /> */}
+      {/* <Stake /> */}
+      <ProjectCard project={dummyProject} />
     </main>
   );
 }
