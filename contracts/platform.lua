@@ -33,9 +33,20 @@ Handlers.add(
         return msg.Action == "Debit-Notice" and msg["X-Action"] == "Project-Token-To-User"
     end,
     function(msg)
+        print("pt to user confirmed entered")
         local tags = msg.Tags
-        local userTransactions = utils.find(function(val) return val.user == tags["X-User"] end)(TRANSACTION)
-        userTransactions.msg[tags["X-MessageId"]]["ptSent"] = true
+        -- local userTransactions = utils.find(function(val) return val.user == tags["X-User"] end)(TRANSACTION)
+        -- userTransactions.msg[tags["X-MessageId"]]["ptSent"] = true
+        for k, v in ipairs(TRANSACTION) do 
+            if(v.user == msg.Recipient) then
+                for i, j in ipairs(TRANSACTION[k].msg) do
+                    if(j.messageId == tags["X-MessageId"]) then
+                        TRANSACTION[k].msg[i].ptSent = true
+                    end
+                end
+            end
+        end
+        print("pt to user confirmed left")
     end
 )
 
@@ -45,24 +56,26 @@ Handlers.add(
         return msg.Action == "Credit-Notice" and msg["X-Action"] == "Project-Token-To-User"
     end,
     function(msg)
+        print("pt to user entered")
         local tags = msg.Tags
         print(tags)
         -- finding which project the token is from
         local tokenProcess = utils.find(function(val) return val.process == msg.Sender end)(PROJECTS).tokenProcess
-        -- upadate the TRANSACTION table
-        local userTransactions = utils.find(function(val) return val.user == tags["X-User"] end)(TRANSACTION)
-        local message = userTransactions.msg[tags["X-MessageId"]]
-        if (message == nil) then
-            print("Message not found" .. tags["X-MessageId"])
-            return
+        print("token process" .. tostring(tokenProcess))
+        -- -- upadate the TRANSACTION table
+        for k, v in ipairs(TRANSACTION) do 
+            if(v.user == tags["X-User"]) then
+                for i, j in ipairs(TRANSACTION[k].msg) do
+                    if(j.messageId == tags["X-MessageId"]) then
+                        TRANSACTION[k].msg[i].ProjectTokenRecieved = tags["X-Quantity"] 
+                        TRANSACTION[k].msg[i].ptRecieved = true
+                    end
+                end
+            end
         end
-        userTransactions.msg[tags["X-MessageId"]]["ProjectTokenRecieved"] = tags["X-Quantity"]
-        userTransactions.msg[tags["X-MessageId"]]["ptRecieved"] = true
-
-
         -- OUR CUT- $$$
         local transferQuantity = math.floor(_OUR_CUT * tags["X-Quantity"])
-        print(transferQuantity)
+        print("transfer quantity" .. tostring(transferQuantity))
         ao.send({
             Target = tokenProcess,
             Action = "Transfer",
@@ -71,6 +84,7 @@ Handlers.add(
             ["X-Action"] = "Project-Token-To-User",
             ["X-MessageId"] = tags["X-MessageId"],
         })
+        print("pt to user left")
     end
 )
 
@@ -85,14 +99,14 @@ Handlers.add(
     function(msg)
         print("entered u to p")
         local tags = msg.Tags
-
-        local projectID = utils.find(function(val) return val.ticker == tags["X-Ticker"] end)(PROJECTS).proces
+        local projectID = utils.find(function(val) return val.ticker == tags["X-Ticker"] end)(PROJECTS).process
+        print("pid" .. tostring(projectID))
         local msgId = msg.Id
-
-
+        print("u to p mid" .. tostring(msgId))
         -- add a new transaction
         local userTransactions = utils.find(function(val) return val.user == tags["X-User"] end)(TRANSACTION)
         local newMsg = {
+            messageId = msgId,
             aoEthQuantity = tags["X-Quantity"],
             projectTicker = tags["X-Ticker"],
             ProjectTokenRecieved = "",
@@ -102,23 +116,13 @@ Handlers.add(
         if (userTransactions == nil) then
             table.insert(TRANSACTION, {
                 user = tags["X-User"],
-                msg = {
-                    [msgId] = newMsg,
-                },
+                msg = {newMsg}
             })
         else
-            table.insert(userTransactions.msg, {
-                [msgId] = {
-                    aoEthQuantity = tags["X-Quantity"],
-                    projectTicker = tags["X-Ticker"],
-                    ProjectTokenRecieved = "",
-                    ptRecieved = false,
-                    ptSent = false,
-                },
-            })
+            table.insert(userTransactions.msg, newMsg)
         end
 
-
+        print("before notif send")
         -- Send notification to the project
         ao.send({
             Target = projectID,
@@ -129,35 +133,36 @@ Handlers.add(
         })
 
         -- tags["X-Type"] LATER
+        print("exit u to p")
     end
 )
 
 -- NOT NEEDED
-Handlers.add(
-    "check",
-    Handlers.utils.hasMatchingTag("Action", "check"),
-    function(msg)
-        local tags = msg.Tags
-        local user = tags["X-User"]
-        for _, v in ipairs(TRANSACTION) do
-            print(TRANSACTION[_])
-            if (v.user == tags["X-User"]) then
-                print("in")
-                for k, j in pairs(v) do
-                    if (k == "msg") then
-                        print("in2")
-                        table.insert(TRANSACTION[_].msg, {
-                            Id = {                         -- Nested table
-                                aoEthQuantity = "",        -- string type
-                                projectTicker = "",        -- string type
-                                ProjectTokenRecieved = "", -- string type
-                                ptRecieved = false,        -- boolean type
-                                ptSent = false,            -- boolean type
-                            },
-                        })
-                    end
-                end
-            end
-        end
-    end
-)
+-- Handlers.add(
+--     "check",
+--     Handlers.utils.hasMatchingTag("Action", "check"),
+--     function(msg)
+--         local tags = msg.Tags
+--         local user = tags["X-User"]
+--         for _, v in ipairs(TRANSACTION) do
+--             print(TRANSACTION[_])
+--             if (v.user == tags["X-User"]) then
+--                 print("in")
+--                 for k, j in pairs(v) do
+--                     if (k == "msg") then
+--                         print("in2")
+--                         table.insert(TRANSACTION[_].msg, {
+--                             Id = {                         -- Nested table
+--                                 aoEthQuantity = "",        -- string type
+--                                 projectTicker = "",        -- string type
+--                                 ProjectTokenRecieved = "", -- string type
+--                                 ptRecieved = false,        -- boolean type
+--                                 ptSent = false,            -- boolean type
+--                             },
+--                         })
+--                     end
+--                 end
+--             end
+--         end
+--     end
+-- )
