@@ -1,3 +1,5 @@
+local utils = require(".utils")
+
 -- b8wVsxqaX_FloDZidv0uia220gjZWaab5q6XXGyk3gY
 PROJECTS = PROJECTS or {
     {
@@ -12,37 +14,53 @@ TRANSACTION = TRANSACTION or {
     {
         user = "WGUCLSI5JUuOvqWczDFTmjBc-BgxbbaAdPCadK2xDbc",
         msg = {
-
+            -- {
+            --     msgId = {
+            --         aoEthQuantity = "100",
+            --         projectTicker = "SATP",
+            --         ProjectTokenRecieved = "",
+            --         ptRecieved = false,
+            --         ptSent = false,
+            --     },
+            -- },
         }
     }
 }
 
 _OUR_CUT = 0.9
 
-function isPTokentoUserSuccessTransfer(msg)
-    if msg.Action == "Credit-Notice" and msg["X-Action"] == "Project-Token-To-User" then
-        return true
-    else
-        return false
+Handlers.add(
+    "Project Token Confirmed to User",
+    function(msg)
+        return msg.Action == "Debit-Notice" and msg["X-Action"] == "Project-Token-To-User"
+    end,
+    function(msg)
+        local tags = msg.Tags
+        local userTransactions = utils.find(function(val) return val.user == tags["X-User"] end)(TRANSACTION)
+        userTransactions.msg[tags["X-MessageId"]]["ptSent"] = true
     end
-end
+)
 
 Handlers.add(
     "Project Token To User",
-    isPTokentoUserSuccessTransfer,
     function(msg)
-        local tokenProcess
+        return msg.Action == "Credit-Notice" and msg["X-Action"] == "Project-Token-To-User"
+    end,
+    function(msg)
         local tags = msg.Tags
         print(tags)
         -- finding which project the token is from
-        for _, projectData in ipairs(PROJECTS) do
-            print("v:")
-            print(projectData)
-            if (projectData.process == msg.Sender) then
-                print("ENTERED")
-                tokenProcess = projectData.tokenProcess
-            end
+        local tokenProcess = utils.find(function(val) return val.process == msg.Sender end)(PROJECTS).tokenProcess
+        -- upadate the TRANSACTION table
+        local userTransactions = utils.find(function(val) return val.user == tags["X-User"] end)(TRANSACTION)
+        local message = userTransactions.msg[tags["X-MessageId"]]
+        if (message == nil) then
+            print("Message not found" .. tags["X-MessageId"])
+            return
         end
+        userTransactions.msg[tags["X-MessageId"]]["ProjectTokenRecieved"] = tags["X-Quantity"]
+        userTransactions.msg[tags["X-MessageId"]]["ptRecieved"] = true
+
 
         -- OUR CUT- $$$
         local transferQuantity = math.floor(_OUR_CUT * tags["X-Quantity"])
@@ -51,50 +69,56 @@ Handlers.add(
             Target = tokenProcess,
             Action = "Transfer",
             Quantity = tostring(transferQuantity),
-            Recipient = tags["X-User"]
+            Recipient = tags["X-User"],
+            ["X-Action"] = "Project-Token-To-User",
+            ["X-MessageId"] = tags["X-MessageId"],
         })
     end
 )
 
-function isUsertoPlatformSuccessTransfer(msg)
-    if msg.Action == "Credit-Notice" and msg["X-Action"] == "User-to-Platform" then
-        return true
-    else
-        return false
-    end
-end
 
 --  1. user sends aoeth to our platform
 -- X-User, X-Action, X-Ticker, X-Quantity
 Handlers.add(
     "User To Platform",
-    isUsertoPlatformSuccessTransfer,
+    function(msg)
+        return msg.Action == "Credit-Notice" and msg["X-Action"] == "User-to-Platform"
+    end,
     function(msg)
         local tags = msg.Tags
-        local projectID
-        for _, projectData in ipairs(PROJECTS) do
-            print(projectData.ticker)
-            if (projectData.ticker == tags["X-Ticker"]) then
-                print("inn")
-                projectID = projectData.process
-            end
-        end
+
+        local projectID = utils.find(function(val) return val.ticker == tags["X-Ticker"] end)(PROJECTS).proces
         local msgId = msg.Id
 
-        -- TODO
-        for _, v in ipairs(TRANSACTION) do
-            if (v.user == tags["X-User"]) then
-                table.insert(TRANSACTION[_].msg, {
-                    msgId = {                               -- Nested table
-                        aoEthQuantity = tags["X-Quantity"], -- string type
-                        projectTicker = tags["X-Ticker"],   -- string type
-                        PTokenPlatformRecieved = "",        -- string type
-                        ptRecieved = false,                 -- boolean type
-                        ptSent = false,                     -- boolean type
-                    },
-                })
-            end
+
+        -- add a new transaction
+        local userTransactions = utils.find(function(val) return val.user == tags["X-User"] end)(TRANSACTION)
+        local newMsg = {
+            aoEthQuantity = tags["X-Quantity"],
+            projectTicker = tags["X-Ticker"],
+            ProjectTokenRecieved = "",
+            ptRecieved = false,
+            ptSent = false,
+        }
+        if (userTransactions == nil) then
+            table.insert(TRANSACTION, {
+                user = tags["X-User"],
+                msg = {
+                    [msgId] = newMsg,
+                },
+            })
+        else
+            table.insert(userTransactions.msg, {
+                [msgId] = {
+                    aoEthQuantity = tags["X-Quantity"],
+                    projectTicker = tags["X-Ticker"],
+                    ProjectTokenRecieved = "",
+                    ptRecieved = false,
+                    ptSent = false,
+                },
+            })
         end
+
 
         -- Send notification to the project
         ao.send({
@@ -102,6 +126,7 @@ Handlers.add(
             Action = "Notif",
             User = tags["X-User"],
             Quantity = tags["X-Quantity"],
+            MessageId = msgId,
         })
 
         -- tags["X-Type"] LATER
@@ -123,12 +148,12 @@ Handlers.add(
                     if (k == "msg") then
                         print("in2")
                         table.insert(TRANSACTION[_].msg, {
-                            Id = {                           -- Nested table
-                                aoEthQuantity = "",          -- string type
-                                projectTicker = "",          -- string type
-                                PTokenPlatformRecieved = "", -- string type
-                                ptRecieved = false,          -- boolean type
-                                ptSent = false,              -- boolean type
+                            Id = {                         -- Nested table
+                                aoEthQuantity = "",        -- string type
+                                projectTicker = "",        -- string type
+                                ProjectTokenRecieved = "", -- string type
+                                ptRecieved = false,        -- boolean type
+                                ptSent = false,            -- boolean type
                             },
                         })
                     end
