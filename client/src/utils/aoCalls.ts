@@ -1,21 +1,22 @@
 // import { useApi } from "arweave-wallet-kit";
 import { createTransaction } from "arweavekit";
+import { PLATFORM_ADDRESS } from "./constants";
 
-const signArSend = async () => {
+const signArTxn = async () => {
+  const q = 0.1 * 1000000000000;
   console.log("insign ar");
+
   const transaction = await createTransaction({
     type: "wallet",
-    quantity: "2",
-    target: "-KJHePyRcph5m9PwT6cEtHFb97WxWKfs_JcKELJb4lY",
+    // quantity: q.toString(),
+    target: PLATFORM_ADDRESS,
+    // data: "hello world",
     environment: "mainnet",
-    //   options: {
-    //     tags: [{ name: "key_name", value: "some_value" }],
-    //   },
+    options: {
+      tags: [{ name: "Type", value: "Transfer" }],
+    },
   });
-  //   console.log(transaction, typeof transaction);
-  console.log("before api");
-  const api = useApi();
-  await api.sign(transaction);
-  console.log("done");
+  console.log(transaction);
+  return transaction;
 };
-export default signArSend;
+export default signArTxn;

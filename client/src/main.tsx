@@ -8,7 +8,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <ArweaveWalletKit
       config={{
-        permissions: ["SIGN_TRANSACTION"],
+        permissions: ["ACCESS_ADDRESS", "DISPATCH", "ACCESS_ALL_ADDRESSES", "ACCESS_PUBLIC_KEY", "SIGN_TRANSACTION"],
         ensurePermissions: true,
       }}
       theme={{
