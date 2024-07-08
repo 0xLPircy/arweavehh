@@ -8,13 +8,14 @@ Handlers.add(
     Handlers.utils.hasMatchingTag("Action", "Notif"),
     function(msg)
         -- recieved notif
-        print(msg.User)
-        print(msg.Quantity)
+        print("entered notif")
+        print("notif user:" .. tostring(msg.User))
+        print("quantity" .. tostring(msg.Quantity))
         -- Formua to calculate the amount to send - TODO
         local ToSend = math.floor(msg.Quantity * _SATP_VAL)
         -- TODO ADD CHECK TO MAKE SURE FROM IS PLATFORM
 
-        print(tostring(ToSend))
+        print("to send" .. tostring(ToSend))
         ao.send({
             Target = _SATP_TOKEN,
             Action = "Transfer",
