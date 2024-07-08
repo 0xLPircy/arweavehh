@@ -87,11 +87,9 @@ Handlers.add(
     function(msg)
         print("entered u to p")
         local tags = msg.Tags
-
-        local projectID = utils.find(function(val) return val.ticker == tags["X-Ticker"] end)(PROJECTS).proces
+        local projectID = utils.find(function(val) return val.ticker == tags["X-Ticker"] end)(PROJECTS).process
+        print(projectID)
         local msgId = msg.Id
-
-
         -- add a new transaction
         local userTransactions = utils.find(function(val) return val.user == tags["X-User"] end)(TRANSACTION)
         local newMsg = {
@@ -105,12 +103,12 @@ Handlers.add(
             table.insert(TRANSACTION, {
                 user = tags["X-User"],
                 msg = {
-                    [msgId] = newMsg,
+                    msgId = newMsg,
                 },
             })
         else
             table.insert(userTransactions.msg, {
-                [msgId] = {
+                msgId = {
                     aoEthQuantity = tags["X-Quantity"],
                     projectTicker = tags["X-Ticker"],
                     ProjectTokenRecieved = "",
@@ -120,7 +118,7 @@ Handlers.add(
             })
         end
 
-
+        print("before notif send")
         -- Send notification to the project
         ao.send({
             Target = projectID,
