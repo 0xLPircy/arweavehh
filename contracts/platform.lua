@@ -1,14 +1,8 @@
 local utils = require(".utils")
 
 -- b8wVsxqaX_FloDZidv0uia220gjZWaab5q6XXGyk3gY
-PROJECTS = PROJECTS or {
-    {
-        process = "1wsCJtrztr99c3Qw5ENVfhr59SLjpjRODXCLwE3OZYU",
-        tokenProcess = "R0kARdLKbO6j8SVZ-Ui9iR5O6FVPLnRjFxtAwjZp5lk",
-        ticker = "SATP",
-        name = "Saturn",
-    },
-}
+local PROJECTS = require("projects")
+
 
 TRANSACTION = TRANSACTION or {
     {
