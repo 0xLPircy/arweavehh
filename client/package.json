@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@permaweb/aoconnect": "^0.0.56",
     "arweave": "^1.15.1",
     "arweave-wallet-kit": "^1.0.4",
     "arweavekit": "^1.5.1",

@@ -1,3 +1,5 @@
+local json = require("json")
+
 PROJECTS = PROJECTS or {
     {
         process = "1wsCJtrztr99c3Qw5ENVfhr59SLjpjRODXCLwE3OZYU",
@@ -31,4 +33,15 @@ PROJECTS = PROJECTS or {
         },
     },
 }
+
+Handlers.add("projects", function(msg)
+        return msg.Action == "Get-Projects"
+    end,
+
+    function(msg)
+        Send({ Target = msg.From, Action = "All-Projects", Data = json.encode(PROJECTS) })
+    end
+
+)
+
 return PROJECTS

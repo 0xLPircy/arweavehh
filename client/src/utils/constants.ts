@@ -1,5 +1,7 @@
 export const PLATFORM_ADDRESS = "-KJHePyRcph5m9PwT6cEtHFb97WxWKfs_JcKELJb4lY";
 
+export const PLATFORM_PID = "ENK3n22aHK0tSlDh54E1eXujnDroUgg8CPmUs8cfAKw";
+
 import Arweave from "arweave";
 import { ProjectType } from "../types/Project";
 
