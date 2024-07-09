@@ -29,15 +29,6 @@ const ProjectsDisplay = () => {
         {projects.map((project) => {
           return <ProjectCard project={project} />;
         })}
-        {projects.map((project) => {
-          return <ProjectCard project={project} />;
-        })}
-        {projects.map((project) => {
-          return <ProjectCard project={project} />;
-        })}
-        {projects.map((project) => {
-          return <ProjectCard project={project} />;
-        })}
       </div>
     </section>
   );

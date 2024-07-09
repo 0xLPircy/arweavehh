@@ -6,7 +6,7 @@ export default function ProjectCard({ project }: { project: ProjectType }) {
 
   return (
     <a
-      href={"/project/" + project.id}
+      href={"/project/" + project.ticker}
       className="max-w-[390px] rounded-lg border-[1px] border-[#40959D]
       flex flex-col gap-[6px] justify-between items-center py-[15px] px-[21px]"
     >
