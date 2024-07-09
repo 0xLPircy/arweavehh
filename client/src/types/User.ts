@@ -1,10 +1,16 @@
 export type UserTransaction = {
   messageId: string;
-  aoEthQuantity: string;
+  aoEthQuantity: string; // can be positive or negative int
   projectTicker: string;
   ProjectTokenReceived: string;
   ptReceived: boolean;
   ptSent: boolean;
+};
+
+export type UserTxnData = {
+  user: string;
+  currentlyStaked: boolean;
+  msg: UserTransaction[];
 };
 
 export type StakedAmounts = Record<

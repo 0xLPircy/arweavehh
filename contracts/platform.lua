@@ -1,6 +1,8 @@
 local utils = require(".utils")
 local json = require("json")
 
+-- cooldown period, unstaking (negative amount), stake details (exchange rate)
+
 -- b8wVsxqaX_FloDZidv0uia220gjZWaab5q6XXGyk3gY
 -- ENK3n22aHK0tSlDh54E1eXujnDroUgg8CPmUs8cfAKw - parth
 local PROJECTS = require("projects")
@@ -143,11 +145,13 @@ Handlers.add(
             ptSent = false,
         }
         if (userTransactions == nil) then
+            -- new user staking first time
             table.insert(TRANSACTION, {
                 user = tags["X-User"],
                 msg = { newMsg }
             })
         else
+            -- user is staking again
             table.insert(userTransactions.msg, newMsg)
         end
 
@@ -163,6 +167,12 @@ Handlers.add(
 
         -- tags["X-Type"] LATER
         print("exit u to p")
+    end
+)
+
+Handlers.add("Unstaking AoETH", Handlers.utils.hasMatchingTag("Action", "unstake"),
+    function(msg)
+
     end
 )
 

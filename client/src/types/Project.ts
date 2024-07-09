@@ -3,6 +3,8 @@ export type ProjectType = {
   name: string;
   description: string;
   logo: string;
+  cooldownPeriod: number;
+  aoethRewardRate: number;
   ticker: string;
   founders: Founder[];
   socials: Socials;
