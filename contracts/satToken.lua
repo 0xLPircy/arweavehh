@@ -1,4 +1,6 @@
 -- R0kARdLKbO6j8SVZ-Ui9iR5O6FVPLnRjFxtAwjZp5lk
+-- TodIkfiRyzdzBFvRQEuwWNXlXYSRiY6vTuA4Xq-9oTk -parth
+
 local bint = require('.bint')(256)
 local ao = require('ao')
 --[[
@@ -122,12 +124,11 @@ Handlers.add('balances', Handlers.utils.hasMatchingTag('Action', 'Balances'),
    ]]
 --
 Handlers.add('transfer', Handlers.utils.hasMatchingTag('Action', 'Transfer'), function(msg)
-    print(msg.Recipient)
-        print(msg.Quantity)
   assert(type(msg.Recipient) == 'string', 'Recipient is required!')
   assert(type(msg.Quantity) == 'string', 'Quantity is required!')
   assert(bint.__lt(0, bint(msg.Quantity)), 'Quantity must be greater than 0')
 
+  print("Transfering" .. msg.Quantity .. "tokens to" .. msg.Recipient)
   if not Balances[msg.From] then Balances[msg.From] = "0" end
   if not Balances[msg.Recipient] then Balances[msg.Recipient] = "0" end
 
@@ -172,6 +173,7 @@ Handlers.add('transfer', Handlers.utils.hasMatchingTag('Action', 'Transfer'), fu
       end
 
       -- Send Debit-Notice and Credit-Notice
+      print("Transfer Successful")
       ao.send(debitNotice)
       ao.send(creditNotice)
     end

@@ -1,4 +1,5 @@
 local utils = require(".utils")
+local json = require("json")
 
 -- b8wVsxqaX_FloDZidv0uia220gjZWaab5q6XXGyk3gY
 -- ENK3n22aHK0tSlDh54E1eXujnDroUgg8CPmUs8cfAKw - parth
@@ -10,13 +11,12 @@ TRANSACTION = TRANSACTION or {
         user = "WGUCLSI5JUuOvqWczDFTmjBc-BgxbbaAdPCadK2xDbc",
         msg = {
             -- {
-            --     msgId = {
+            --         messageId = ""
             --         aoEthQuantity = "100",
             --         projectTicker = "SATP",
-            --         ProjectTokenRecieved = "",
-            --         ptRecieved = false,
+            --         ProjectTokenReceived = "",
+            --         ptReceived = false,
             --         ptSent = false,
-            --     },
             -- },
         }
     }
@@ -25,7 +25,23 @@ TRANSACTION = TRANSACTION or {
 _OUR_CUT = 0.9
 
 
+-- Get Handers
 
+Handlers.add("Get User Data",
+    function(msg)
+        return msg.Action == "Get-User-Data"
+    end,
+    function(msg)
+        local user = msg.From
+        print("user" .. user)
+        local userTransactions = utils.find(function(val) return val.user == user end)(TRANSACTION)
+        Send({ Target = msg.From, Action = "User-Data", Data = json.encode(userTransactions) })
+    end
+
+)
+
+
+-- Stake Handlers
 
 Handlers.add(
     "Project Token Confirmed to User",
@@ -35,12 +51,20 @@ Handlers.add(
     function(msg)
         print("pt to user confirmed entered")
         local tags = msg.Tags
+        -- update project amount staked
+        PROJECTS = utils.map(function(val, key)
+            if (val.tokenProcess == msg.Sender) then
+                val.amountStaked = val.amountStaked + tonumber(msg.Quantity)
+            end
+            return val
+        end)(PROJECTS)
+
         -- local userTransactions = utils.find(function(val) return val.user == tags["X-User"] end)(TRANSACTION)
         -- userTransactions.msg[tags["X-MessageId"]]["ptSent"] = true
-        for k, v in ipairs(TRANSACTION) do 
-            if(v.user == msg.Recipient) then
+        for k, v in ipairs(TRANSACTION) do
+            if (v.user == msg.Recipient) then
                 for i, j in ipairs(TRANSACTION[k].msg) do
-                    if(j.messageId == tags["X-MessageId"]) then
+                    if (j.messageId == tags["X-MessageId"]) then
                         TRANSACTION[k].msg[i].ptSent = true
                     end
                 end
@@ -63,12 +87,12 @@ Handlers.add(
         local tokenProcess = utils.find(function(val) return val.process == msg.Sender end)(PROJECTS).tokenProcess
         print("token process" .. tostring(tokenProcess))
         -- -- upadate the TRANSACTION table
-        for k, v in ipairs(TRANSACTION) do 
-            if(v.user == tags["X-User"]) then
+        for k, v in ipairs(TRANSACTION) do
+            if (v.user == tags["X-User"]) then
                 for i, j in ipairs(TRANSACTION[k].msg) do
-                    if(j.messageId == tags["X-MessageId"]) then
-                        TRANSACTION[k].msg[i].ProjectTokenRecieved = tags["X-Quantity"] 
-                        TRANSACTION[k].msg[i].ptRecieved = true
+                    if (j.messageId == tags["X-MessageId"]) then
+                        TRANSACTION[k].msg[i].ProjectTokenReceived = tags["X-Quantity"]
+                        TRANSACTION[k].msg[i].ptReceived = true
                     end
                 end
             end
@@ -99,8 +123,13 @@ Handlers.add(
     function(msg)
         print("entered u to p")
         local tags = msg.Tags
-        local projectID = utils.find(function(val) return val.ticker == tags["X-Ticker"] end)(PROJECTS).process
-        print("pid" .. tostring(projectID))
+        local project = utils.find(function(val) return val.ticker == tags["X-Ticker"] end)(PROJECTS)
+        if (project == nil) then
+            print("project not found")
+            return
+        end
+        local projectPID = project.process
+        print("pid" .. tostring(projectPID))
         local msgId = msg.Id
         print("u to p mid" .. tostring(msgId))
         -- add a new transaction
@@ -109,14 +138,14 @@ Handlers.add(
             messageId = msgId,
             aoEthQuantity = tags["X-Quantity"],
             projectTicker = tags["X-Ticker"],
-            ProjectTokenRecieved = "",
-            ptRecieved = false,
+            ProjectTokenReceived = "",
+            ptReceived = false,
             ptSent = false,
         }
         if (userTransactions == nil) then
             table.insert(TRANSACTION, {
                 user = tags["X-User"],
-                msg = {newMsg}
+                msg = { newMsg }
             })
         else
             table.insert(userTransactions.msg, newMsg)
@@ -125,7 +154,7 @@ Handlers.add(
         print("before notif send")
         -- Send notification to the project
         ao.send({
-            Target = projectID,
+            Target = projectPID,
             Action = "Notif",
             User = tags["X-User"],
             Quantity = tags["X-Quantity"],
@@ -155,8 +184,8 @@ Handlers.add(
 --                             Id = {                         -- Nested table
 --                                 aoEthQuantity = "",        -- string type
 --                                 projectTicker = "",        -- string type
---                                 ProjectTokenRecieved = "", -- string type
---                                 ptRecieved = false,        -- boolean type
+--                                 ProjectTokenReceived = "", -- string type
+--                                 ptReceived = false,        -- boolean type
 --                                 ptSent = false,            -- boolean type
 --                             },
 --                         })
