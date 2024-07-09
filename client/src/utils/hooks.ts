@@ -72,8 +72,9 @@ export function useUserData(address?: string) {
 
       const stakedAmounts = confirmedTransactions.reduce((acc: StakedAmounts, t: UserTransaction) => {
         const projectTicker = t.projectTicker;
-        if (!acc[projectTicker]) acc[projectTicker] = { amount: 0 };
-        acc[projectTicker].amount += t.ptSent;
+        if (!acc[projectTicker]) acc[projectTicker] = { aoeth: 0, projectToken: 0 };
+        acc[projectTicker].aoeth += parseInt(t.aoEthQuantity) / 10 ** 12;
+        acc[projectTicker].projectToken += parseInt(t.ProjectTokenReceived) / 10 ** 12;
 
         return acc;
       }, {} as StakedAmounts);
