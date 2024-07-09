@@ -5,6 +5,8 @@ import "./index.css";
 import { ArweaveWalletKit } from "arweave-wallet-kit";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Project from "./pages/Project.tsx";
+import About from "./pages/About.tsx";
+import Profile from "./pages/Profile.tsx";
 
 const router = createBrowserRouter([
   {
@@ -15,19 +17,21 @@ const router = createBrowserRouter([
     path: "project/:projectId",
     element: <Project />,
   },
+  {
+    path: "/about",
+    element: <About />,
+  },
+  {
+    path: "/profile",
+    element: <Profile />,
+  },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <ArweaveWalletKit
       config={{
-        permissions: [
-          "ACCESS_ADDRESS",
-          "DISPATCH",
-          "ACCESS_ALL_ADDRESSES",
-          "ACCESS_PUBLIC_KEY",
-          "SIGN_TRANSACTION",
-        ],
+        permissions: ["ACCESS_ADDRESS", "DISPATCH", "ACCESS_ALL_ADDRESSES", "ACCESS_PUBLIC_KEY", "SIGN_TRANSACTION"],
         ensurePermissions: true,
       }}
       theme={{

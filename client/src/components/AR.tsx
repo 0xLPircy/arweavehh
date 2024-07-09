@@ -1,8 +1,10 @@
 import { useActiveAddress, useConnection } from "arweave-wallet-kit";
+import axios from "axios";
+
 import { getBalance, postTransaction, signTransaction } from "arweavekit";
 import { PLATFORM_ADDRESS, arweave } from "../utils/constants";
 
-export default function Stake() {
+export function StakeAr() {
   const address = useActiveAddress();
   const { connected } = useConnection();
 
@@ -43,4 +45,22 @@ export default function Stake() {
       Stake
     </button>
   );
+}
+
+export function UnstakeAr() {
+  const { connected } = useConnection();
+  const address = useActiveAddress();
+
+  if (!connected) return;
+
+  const unstakeNow = async () => {
+    // Call the backend API to unstake the tokens
+    console.log("unstake now");
+    const txn = await axios.post("http://localhost:3000/unstake", {
+      address: address,
+    });
+    console.log("done", txn);
+  };
+
+  return <button onClick={() => unstakeNow()}>Unstake</button>;
 }

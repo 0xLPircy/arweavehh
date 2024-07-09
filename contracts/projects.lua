@@ -1,11 +1,15 @@
 local json = require("json")
+local utils = require(".utils")
 
-PROJECTS = PROJECTS or {
+
+-- TODO: save variable when adding new projects dynamically
+PROJECTS = {
     {
-        process = "1wsCJtrztr99c3Qw5ENVfhr59SLjpjRODXCLwE3OZYU",
-        tokenProcess = "R0kARdLKbO6j8SVZ-Ui9iR5O6FVPLnRjFxtAwjZp5lk",
+        process = "Cx58eCrOb6L03bYozVJjr0r6hPFs9t1zfrxruXMEfjw",
+        tokenProcess = "TodIkfiRyzdzBFvRQEuwWNXlXYSRiY6vTuA4Xq-9oTk",
 
         id = "sat",
+        amountStaked = 1.5,
         name = "Saturn",
         description = "A revolutionary project aiming to explore the outer limits of blockchain technology.",
         logo =
@@ -34,12 +38,24 @@ PROJECTS = PROJECTS or {
     },
 }
 
-Handlers.add("projects", function(msg)
+Handlers.add("Get All Projects", function(msg)
         return msg.Action == "Get-Projects"
     end,
 
     function(msg)
         Send({ Target = msg.From, Action = "All-Projects", Data = json.encode(PROJECTS) })
+    end
+)
+
+Handlers.add("Get One Project", function(msg)
+        return msg.Action == "Get-Project"
+    end,
+
+    function(msg)
+        print("Get One Project" .. msg.ProjectId)
+        local project = utils.find(function(val) return val.id == msg.ProjectId end)(PROJECTS)
+
+        Send({ Target = msg.From, Action = "One-Project", Data = json.encode(project) })
     end
 
 )

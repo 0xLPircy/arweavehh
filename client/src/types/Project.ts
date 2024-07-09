@@ -6,6 +6,7 @@ export type ProjectType = {
   ticker: string;
   founders: Founder[];
   socials: Socials;
+  amountStaked: number;
 };
 
 type Founder = {

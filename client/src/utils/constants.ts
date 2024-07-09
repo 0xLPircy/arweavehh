@@ -2,6 +2,8 @@ export const PLATFORM_ADDRESS = "-KJHePyRcph5m9PwT6cEtHFb97WxWKfs_JcKELJb4lY";
 
 export const PLATFORM_PID = "ENK3n22aHK0tSlDh54E1eXujnDroUgg8CPmUs8cfAKw";
 
+export const AOETH_TOKEN_PID = "JI7IE1Hg-lviQ93ct92LTX8YbTHbkWFyshC0Vjhv6Lk";
+
 import Arweave from "arweave";
 import { ProjectType } from "../types/Project";
 
@@ -11,6 +13,7 @@ export const arweave = Arweave.init({});
 export const dummyProject: ProjectType = {
   id: "sat",
   name: "Saturn",
+  amountStaked: 1000,
   description: "A revolutionary project aiming to explore the outer limits of blockchain technology.",
   logo: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/wcAAgEBALqlU/cAAAAASUVORK5CYII=",
   ticker: "SAT",

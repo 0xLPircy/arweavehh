@@ -61,7 +61,7 @@ Denomination = Denomination or 12
 Balances = Balances or { [ao.id] = utils.toBalanceValue(10000 * 10 ^ Denomination) }
 TotalSupply = TotalSupply or utils.toBalanceValue(10000 * 10 ^ Denomination)
 Name = Name or 'AO Ether'
-Ticker = Ticker or 'AOTH'
+Ticker = Ticker or 'AOETH'
 Logo = Logo or 'SBCCXwwecBlDqRLUjb8dYABExTJXLieawf7m2aBJ-KY'
 
 --[[
@@ -115,8 +115,8 @@ end)
    ]]
 --
 Handlers.add('balances', Handlers.utils.hasMatchingTag('Action', 'Balances'),
-  function(msg) 
-    ao.send({ Target = msg.From, Data = json.encode(Balances) }) 
+  function(msg)
+    ao.send({ Target = msg.From, Data = json.encode(Balances) })
   end)
 
 --[[
@@ -124,8 +124,8 @@ Handlers.add('balances', Handlers.utils.hasMatchingTag('Action', 'Balances'),
    ]]
 --
 Handlers.add('transfer', Handlers.utils.hasMatchingTag('Action', 'Transfer'), function(msg)
-    print(msg.Recipient)
-        print(msg.Quantity)
+  print(msg.Recipient)
+  print(msg.Quantity)
   assert(type(msg.Recipient) == 'string', 'Recipient is required!')
   assert(type(msg.Quantity) == 'string', 'Quantity is required!')
   assert(bint.__lt(0, bint(msg.Quantity)), 'Quantity must be greater than 0')

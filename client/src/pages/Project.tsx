@@ -1,12 +1,13 @@
 import Navbar from "../components/Navbar";
 import ProjectFull from "../components/ProjectFull";
-import { dummyProject } from "../utils/constants";
+import { useProject } from "../utils/hooks";
 
 export default function Project() {
+  const project = useProject("sat");
   return (
     <>
       <Navbar />
-      <ProjectFull project={dummyProject} />
+      {project && <ProjectFull project={project} />}
     </>
   );
 }
