@@ -5,6 +5,8 @@ import "./index.css";
 import { ArweaveWalletKit } from "arweave-wallet-kit";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Project from "./pages/Project.tsx";
+import { Navbar, Footer } from "./components";
+import User from "./pages/User.tsx";
 
 const router = createBrowserRouter([
   {
@@ -12,8 +14,12 @@ const router = createBrowserRouter([
     element: <App />,
   },
   {
-    path: "project/:projectId",
+    path: "/project/:projectId",
     element: <Project />,
+  },
+  {
+    path: "/profile",
+    element: <User />,
   },
 ]);
 
@@ -36,7 +42,11 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
         accent: { r: 32, g: 81, b: 86 },
       }}
     >
-      <RouterProvider router={router} />
+      <div className="font-[Rale-Regular] min-h-screen flex flex-col justify-between gap-12 lining-figures">
+        <Navbar />
+        <RouterProvider router={router} />
+        <Footer />
+      </div>
     </ArweaveWalletKit>
   </React.StrictMode>
 );

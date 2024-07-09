@@ -1,21 +1,14 @@
-import "./App.css";
-import Navbar from "./components/Navbar";
-import ProjectCard from "./components/ProjectCard";
-import { useProjects } from "./utils/hooks";
+import "./index.css";
+import { Hero, ProjectsDisplay } from "./components";
 
 function App() {
-  const projects = useProjects();
-  console.log({ projects });
   return (
-    <main className="w-[100vw] min-h-[100vh]">
-      <Navbar />
+    <main className="w-[100vw] flex flex-col gap-24 font-[Rale-Regular]">
+      <Hero />
+      <ProjectsDisplay />
       {/* <img className={"fixed top-0 -z-10"} src={shading} alt="shading" /> */}
-
       {/* <Unstake /> */}
       {/* <Stake /> */}
-      {projects.map((project) => {
-        return <ProjectCard project={project} />;
-      })}
     </main>
   );
 }

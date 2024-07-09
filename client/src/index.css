@@ -2,6 +2,50 @@
 @tailwind components;
 @tailwind utilities;
 
+* {
+  transition: all 0.6s;
+}
+
 body {
-    background-color: #1E1E1E;
+  background-color: #111111;
+}
+/* RALEWAY */
+.lining-figures {
+  font-feature-settings: "lnum";
+}
+@font-face {
+  font-family: "Rale-Regular"; /*Can be any text*/
+  src: local("RalewayRegular"),
+    url("/_font/Raleway/static/Raleway-Regular.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Rale-Medium"; /*Can be any text*/
+  src: local("RalewayMedium"),
+    url("/_font/Raleway/static/Raleway-Medium.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Rale-Bold"; /*Can be any text*/
+  src: local("RalewayBold"),
+    url("/_font/Raleway/static/Raleway-Bold.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Rale-SemiBold"; /*Can be any text*/
+  src: local("RalewaySemiBold"),
+    url("/_font/Raleway/static/Raleway-SemiBold.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Rale-Light"; /*Can be any text*/
+  src: local("RalewayLight"),
+    url("/_font/Raleway/static/Raleway-Light.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Rale-ExtraLight"; /*Can be any text*/
+  src: local("RalewayExtraLight"),
+    url("/_font/Raleway/static/Raleway-ExtraLight.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Rale-Thin"; /*Can be any text*/
+  src: local("RalewayThin"),
+    url("/_font/Raleway/static/Raleway-Thin.ttf") format("truetype");
 }
