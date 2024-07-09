@@ -1,7 +1,7 @@
 local utils = require(".utils")
 local json = require("json")
 
--- b8wVsxqaX_FloDZidv0uia220gjZWaab5q6XXGyk3gY
+-- Zr44oFbd4i9Tiq7SdoyPzmWxH_k-Fu_KtvbvgOjEv4s
 -- ENK3n22aHK0tSlDh54E1eXujnDroUgg8CPmUs8cfAKw - parth
 local PROJECTS = require("projects")
 
@@ -53,12 +53,11 @@ Handlers.add(
         local tags = msg.Tags
         -- update project amount staked
         PROJECTS = utils.map(function(val, key)
-            if (val.tokenProcess == msg.Sender) then
+            if (val.tokenProcess == msg.From) then
                 val.amountStaked = val.amountStaked + tonumber(msg.Quantity)
             end
             return val
         end)(PROJECTS)
-
         -- local userTransactions = utils.find(function(val) return val.user == tags["X-User"] end)(TRANSACTION)
         -- userTransactions.msg[tags["X-MessageId"]]["ptSent"] = true
         for k, v in ipairs(TRANSACTION) do
@@ -125,7 +124,7 @@ Handlers.add(
         local tags = msg.Tags
         local project = utils.find(function(val) return val.ticker == tags["X-Ticker"] end)(PROJECTS)
         if (project == nil) then
-            print("project not found")
+            print("project not found") --TODO
             return
         end
         local projectPID = project.process
@@ -148,7 +147,7 @@ Handlers.add(
                 msg = { newMsg }
             })
         else
-            table.insert(userTransactions.msg, newMsg)
+            table.insert(userTransactions.msg, newMsg) -- HOW
         end
 
         print("before notif send")

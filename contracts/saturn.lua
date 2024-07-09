@@ -1,10 +1,11 @@
 -- dummy process 1wsCJtrztr99c3Qw5ENVfhr59SLjpjRODXCLwE3OZYU
+-- esha pwqHpclb9H39d-XmuU-RfMRBRu4GjzX7v5SWlBGZhsY
 _SATP_VAL = 0.5
 Ticker = "SAT"
 _SATP_TOKEN = "TodIkfiRyzdzBFvRQEuwWNXlXYSRiY6vTuA4Xq-9oTk"
 
 
-PLATFORM_PID = "ENK3n22aHK0tSlDh54E1eXujnDroUgg8CPmUs8cfAKw"
+PLATFORM_PID = "Zr44oFbd4i9Tiq7SdoyPzmWxH_k-Fu_KtvbvgOjEv4s"
 Handlers.add(
     "Notif",
     Handlers.utils.hasMatchingTag("Action", "Notif"),
@@ -24,8 +25,6 @@ Handlers.add(
             Action = "Transfer",
             Quantity = tostring(ToSend),
             Recipient = PLATFORM_PID,
-            -- platform PID
-            -- ["X-Project"] = Ticker
             ["X-Action"] = "Project-Token-To-User",
             ["X-Quantity"] = tostring(ToSend),
             ["X-User"] = msg.User,

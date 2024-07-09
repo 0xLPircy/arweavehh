@@ -5,9 +5,8 @@ local utils = require(".utils")
 -- TODO: save variable when adding new projects dynamically
 PROJECTS = {
     {
-        process = "Cx58eCrOb6L03bYozVJjr0r6hPFs9t1zfrxruXMEfjw",
-        tokenProcess = "TodIkfiRyzdzBFvRQEuwWNXlXYSRiY6vTuA4Xq-9oTk",
-
+        process = "pwqHpclb9H39d-XmuU-RfMRBRu4GjzX7v5SWlBGZhsY",
+        tokenProcess = "1mCv9ODdJsHWhxVVhc_6s1BFkX7uewWpgWakSaTot6Y",
         id = "sat",
         amountStaked = 1.5,
         name = "Saturn",
