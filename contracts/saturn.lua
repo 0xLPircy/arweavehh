@@ -12,16 +12,17 @@ Handlers.add(
         print("entered notif")
         print("notif user:" .. tostring(msg.User))
         print("quantity" .. tostring(msg.Quantity))
+        assert(type(msg.From) == PLATFORM_PID, 'Message must be from the fundAr Platform Process!')
+
         -- Formua to calculate the amount to send - TODO
         local ToSend = math.floor(msg.Quantity * _SATP_VAL)
-        -- TODO ADD CHECK TO MAKE SURE FROM IS PLATFORM
 
         print("to send" .. tostring(ToSend))
         ao.send({
             Target = _SATP_TOKEN,
             Action = "Transfer",
             Quantity = tostring(ToSend),
-            Recipient = PLATFORM_PID, -- platform PID
+            Recipient = PLATFORM_PID,
             -- platform PID
             -- ["X-Project"] = Ticker
             ["X-Action"] = "Project-Token-To-User",
@@ -29,6 +30,6 @@ Handlers.add(
             ["X-User"] = msg.User,
             ["X-MessageId"] = msg.MessageId
         })
-        print(Colors.green .. "saturn sent message")
+        print(Colors.green .. "saturn sent transfer message")
     end
 )
