@@ -14,6 +14,8 @@ PROJECTS = {
         logo =
         "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/wcAAgEBALqlU/cAAAAASUVORK5CYII=",
         ticker = "SAT",
+        cooldownPeriod = 60 * 60 * 24 * 3, -- 3 days in seconds
+        aoethRewardRate = 10,              -- for 1 aoeth, how many tokens of reward
         founders = {
             {
                 name = "Alice Johnson",
