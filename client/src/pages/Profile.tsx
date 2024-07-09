@@ -1,12 +1,11 @@
 import { useActiveAddress } from "arweave-wallet-kit";
 import Navbar from "../components/Navbar";
-import { useAppStore } from "../utils/store";
 import { useUserAoETH, useUserData } from "../utils/hooks";
 import StakeAoeth from "../components/StakeAoeth";
 import { dummyProject } from "../utils/constants";
 
 export default function Profile() {
-  const projects = useAppStore((state) => state.projects);
+  // const projects = useAppStore((state) => state.projects);
   const address = useActiveAddress();
   const userData = useUserData(address);
   const aoeth = useUserAoETH(address);

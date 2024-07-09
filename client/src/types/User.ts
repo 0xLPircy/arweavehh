@@ -1,15 +1,16 @@
 export type UserTransaction = {
   messageId: string;
-  aoEthQuantity: number;
+  aoEthQuantity: string;
   projectTicker: string;
-  ProjectTokenReceived: number;
-  ptReceived: number;
-  ptSent: number;
+  ProjectTokenReceived: string;
+  ptReceived: boolean;
+  ptSent: boolean;
 };
 
 export type StakedAmounts = Record<
   string,
   {
-    amount: number;
+    aoeth: number;
+    projectToken: number;
   }
 >;

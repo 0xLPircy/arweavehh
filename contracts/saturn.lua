@@ -2,8 +2,9 @@
 _SATP_VAL = 0.5
 Ticker = "SAT"
 _SATP_TOKEN = "TodIkfiRyzdzBFvRQEuwWNXlXYSRiY6vTuA4Xq-9oTk"
-PLATFORM_PID = "ENK3n22aHK0tSlDh54E1eXujnDroUgg8CPmUs8cfAKw"
 
+
+PLATFORM_PID = "ENK3n22aHK0tSlDh54E1eXujnDroUgg8CPmUs8cfAKw"
 Handlers.add(
     "Notif",
     Handlers.utils.hasMatchingTag("Action", "Notif"),
