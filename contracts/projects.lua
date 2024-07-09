@@ -1,12 +1,12 @@
 local json = require("json")
 local utils = require(".utils")
-
+local constants = require("constants")
 
 -- TODO: save variable when adding new projects dynamically
 PROJECTS = {
     {
-        process = "pwqHpclb9H39d-XmuU-RfMRBRu4GjzX7v5SWlBGZhsY",
-        tokenProcess = "1mCv9ODdJsHWhxVVhc_6s1BFkX7uewWpgWakSaTot6Y",
+        process = constants.SATURN_PID,
+        tokenProcess = constants.SATURN_TOKEN_PID,
         id = "sat",
         amountStaked = 1.5,
         name = "Saturn",
@@ -14,8 +14,8 @@ PROJECTS = {
         logo =
         "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/wcAAgEBALqlU/cAAAAASUVORK5CYII=",
         ticker = "SAT",
-        cooldownPeriod = 60 * 60 * 24 * 3, -- 3 days in seconds
-        aoethRewardRate = 10,              -- for 1 aoeth, how many tokens of reward
+        cooldownPeriod = 60,  -- 60 seconds
+        aoethRewardRate = 10, -- for 1 aoeth, how many tokens of reward
         founders = {
             {
                 name = "Alice Johnson",

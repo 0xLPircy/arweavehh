@@ -5,6 +5,8 @@ export type UserTransaction = {
   ProjectTokenReceived: string;
   ptReceived: boolean;
   ptSent: boolean;
+  date: number;
+  amtUnstaked: boolean;
 };
 
 export type UserTxnData = {

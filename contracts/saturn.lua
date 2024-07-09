@@ -1,11 +1,15 @@
 -- dummy process 1wsCJtrztr99c3Qw5ENVfhr59SLjpjRODXCLwE3OZYU
 -- esha pwqHpclb9H39d-XmuU-RfMRBRu4GjzX7v5SWlBGZhsY
+
+local constants = require("constants")
+
 _SATP_VAL = 0.5
 Ticker = "SAT"
-_SATP_TOKEN = "TodIkfiRyzdzBFvRQEuwWNXlXYSRiY6vTuA4Xq-9oTk"
+_SATP_TOKEN = constants.SATURN_TOKEN_PID
+
+PLATFORM_PID = constants.PLATFORM_PID
 
 
-PLATFORM_PID = "Zr44oFbd4i9Tiq7SdoyPzmWxH_k-Fu_KtvbvgOjEv4s"
 Handlers.add(
     "Notif",
     Handlers.utils.hasMatchingTag("Action", "Notif"),

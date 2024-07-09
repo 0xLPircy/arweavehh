@@ -1,6 +1,5 @@
 import { useLocation } from "react-router-dom";
-import { ProjectsDisplay, ProjectFull } from "../components";
-import { dummyProject } from "../utils/constants";
+import { ProjectFull, ProjectsDisplay } from "../components";
 import { useProjects } from "../utils/hooks";
 
 export default function Project() {
@@ -8,9 +7,7 @@ export default function Project() {
   const location = useLocation();
 
   // Split the pathname into segments and filter out any empty segments
-  const pathSegments = location.pathname
-    .split("/")
-    .filter((segment) => segment);
+  const pathSegments = location.pathname.split("/").filter((segment) => segment);
 
   // Get the last segment
   const lastSegment = pathSegments[pathSegments.length - 1];
