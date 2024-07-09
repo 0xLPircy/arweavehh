@@ -12,7 +12,7 @@ Handlers.add(
         print("entered notif")
         print("notif user:" .. tostring(msg.User))
         print("quantity" .. tostring(msg.Quantity))
-        assert(type(msg.From) == PLATFORM_PID, 'Message must be from the fundAr Platform Process!')
+        assert(msg.From == PLATFORM_PID, 'Message must be from the fundAr Platform Process!')
 
         -- Formua to calculate the amount to send - TODO
         local ToSend = math.floor(msg.Quantity * _SATP_VAL)
