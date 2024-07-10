@@ -4,7 +4,8 @@ import { ProjectType } from "../types/Project";
 
 const quantity = 1100000000000;
 
-export const stake = async (projectData: ProjectType, address: string) => {
+export const stake = async (projectData: ProjectType, address?: string) => {
+  if (!address) return;
   console.log("stake");
   // Call the backend API to stake the tokens
   const res = await message({

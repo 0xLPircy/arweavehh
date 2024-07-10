@@ -13,6 +13,17 @@ export default function ProjectFull({ project }: { project: ProjectType }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [step, setStep] = useState("0");
   const [amount, setAmount] = useState("");
+
+  const {
+    start,
+    stop,
+    projectConfirmedStake,
+    receivedAoETH: recievedAoETH,
+    rewardsSent,
+  } = useStakeLoader(project, address);
+
+  console.log({ projectConfirmedStake, recievedAoETH, rewardsSent });
+
   const availableAOEth = 500;
 
   const handleMaxClick = () => {
@@ -143,7 +154,11 @@ export default function ProjectFull({ project }: { project: ProjectType }) {
           </p>
           {address ? (
             <button
-              onClick={() => stake(project, address)}
+              onClick={async () => {
+                const startDate = new Date();
+                await stake(project, address);
+                start(startDate);
+              }}
               className="bg-[#40959D] rounded-md px-[24px] py-[3px] w-fit"
             >
               Stake
