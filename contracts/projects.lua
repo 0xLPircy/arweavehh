@@ -49,12 +49,12 @@ PROJECTS = PROJECTS or {
             {
                 name = "Lucifer0x17",
                 designation = "Founder",
-                photo = "",
+                photo = "https://arweavehh.vercel.app/0rbitfounder1.png",
             },
             {
                 name = "Megabyte",
                 designation = "Co-Founder",
-                photo = "",
+                photo = "https://arweavehh.vercel.app/0rbitfounder2.png",
             },
         },
         socials = {
@@ -84,7 +84,7 @@ PROJECTS = PROJECTS or {
             {
                 name = "Farat",
                 designation = "Principle Designer",
-                photo = "https://arweavehh.vercel.app/founders/betterideafound2.png",
+                photo = "https://arweavehh.vercel.app/founders/betterideafounder2.png",
             },
         },
         socials = {
