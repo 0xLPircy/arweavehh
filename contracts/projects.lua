@@ -3,7 +3,7 @@ local utils = require(".utils")
 local constants = require("constants")
 
 -- TODO: save variable when adding new projects dynamically
-PROJECTS = {
+PROJECTS = PROJECTS or {
     {
         process = constants.SATURN_PID,
         tokenProcess = constants.SATURN_TOKEN_PID,
