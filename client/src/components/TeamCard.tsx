@@ -8,14 +8,7 @@ interface TeamProps {
   last: boolean;
 }
 
-const TeamCard: React.FC<TeamProps> = ({
-  pname,
-  github,
-  dribble,
-  twitter,
-  info,
-  last,
-}) => {
+const TeamCard: React.FC<TeamProps> = ({ pname, github, dribble, twitter, info }) => {
   return (
     <div
       className={`ttbAnim teamWave text-center flex flex-col justify-start items-center
