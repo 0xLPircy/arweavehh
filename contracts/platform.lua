@@ -1,12 +1,15 @@
 local utils = require(".utils")
 local json = require("json")
+local constants = require("constants")
+
+AOETH_TOKEN_PID = constants.AOETH_TOKEN_PID
+_OUR_CUT = constants._OUR_CUT
 
 -- cooldown period, unstaking (negative amount), stake details (exchange rate)
 
 -- Zr44oFbd4i9Tiq7SdoyPzmWxH_k-Fu_KtvbvgOjEv4s
 -- ENK3n22aHK0tSlDh54E1eXujnDroUgg8CPmUs8cfAKw - parth
 local PROJECTS = require("projects")
-PROCESSIDOFAOETH = ""
 
 TRANSACTION = TRANSACTION or {
     {
@@ -27,7 +30,7 @@ TRANSACTION = TRANSACTION or {
     }
 }
 
-_OUR_CUT = 0.9
+
 
 
 -- Get Handers
@@ -145,6 +148,7 @@ Handlers.add(
             ProjectTokenReceived = "",
             ptReceived = false,
             ptSent = false,
+            amtUnstaked = false,
             date = msg.Timestamp
         }
         if (userTransactions == nil) then
@@ -173,64 +177,77 @@ Handlers.add(
     end
 )
 
--- Handlers.add("Unstaking AoETH", Handlers.utils.hasMatchingTag("Action", "unstake"),
---     function(msg)
---        local project = utils.find(function(val) return val.ticker == msg.Tags["X-Ticker"] end)(PROJECTS) 
---        local userTransactions = utils.find(function(val) return val.user == msg.From end)(TRANSACTION)
---        local userProjectTransactions = utils.filter(
---         function(val) 
---             return val.ticker == msg.Tags["X-Ticker"] and val.amtUnstaked 
---         end)(userTransactions.msg)
+Handlers.add("Unstaking AoETH", Handlers.utils.hasMatchingTag("Action", "Unstake"),
+    function(msg)
+        print("unstaking all aoeth of" .. msg.From .. "from" .. msg.Tags["Ticker"])
+        local projectTicker = msg.Tags["Ticker"]
+        local project = utils.find(function(val) return val.ticker == projectTicker end)(PROJECTS)
+        local userTransactions = utils.find(function(val) return val.user == msg.From end)(TRANSACTION)
+        assert(userTransactions, "User has not staked any aoeth")
 
---     --    find the latest transaction
---          local latestTxn = utils.reduce(function(acc, val)
---                 if (val.date > acc.date) then
---                  return val
---                 else
---                  return acc
---                 end
---             end, userProjectTransactions[1], userProjectTransactions)
+        local userProjectTransactions = utils.filter(
+            function(val)
+                return val.projectTicker == projectTicker and not val.amtUnstaked
+            end)(userTransactions.msg)
+
+        assert(#userProjectTransactions > 0, "User has not staked any aoeth in this project")
+
+        --    find the latest transaction
+        local latestTxn = utils.reduce(function(acc, val)
+            if (val.date > acc.date) then
+                return val
+            else
+                return acc
+            end
+        end, userProjectTransactions[1], userProjectTransactions)
 
 
 --         local cooldownPeriod = project.cooldownPeriod
 
---         assert(msg.Timestamp - latestTxn.date < cooldownPeriod, "You cannot unstake before the cooldown period")
+        assert(msg.Timestamp - latestTxn.date > cooldownPeriod,
+            "You cannot unstake before the cooldown period, still have " ..
+            tostring(cooldownPeriod - (msg.Timestamp - latestTxn.date)) .. " seconds left")
 
---         -- get total amount staked by user
---         local totalAmount = utils.reduce(function(acc, val)
---             local amt = acc + tonumber(val.aoEthQuantity)
---             return amt
---         end, 0, userProjectTransactions)
+        -- get total amount staked by user
+        local totalAmount = utils.reduce(function(acc, val)
+            local amt = acc + tonumber(val.aoEthQuantity)
+            return amt
+        end, 0, userProjectTransactions)
+
+        print("total amount" .. tostring(totalAmount))
+
+        for k, v in ipairs(TRANSACTION) do
+            if (v.user == msg.From) then
+                for i, j in ipairs(TRANSACTION[k].msg) do
+                    if (j.projectTicker == projectTicker and not j.amtUnstaked) then
+                        TRANSACTION[k].msg[i].amtUnstaked = true
+                    end
+                end
+            end
+        end
+
+        print("updated transactions")
+
+        table.insert(userTransactions.msg, {
+            messageId = msgId,
+            aoEthQuantity = -totalAmount,
+            projectTicker = tags["X-Ticker"],
+            ProjectTokenReceived = "",
+            ptReceived = false,
+            ptSent = false,
+            date = msg.Timestamp
+        })
         
---         for k, v in ipairs(TRANSACTION) do
---             if (v.user == msg.From) then
---                 for i, j in ipairs(TRANSACTION[k].msg) do
---                     if (j.ticker == msg.Tags["X-Ticker"] && ~j.amtUnstaked) then
---                         TRANSACTION[k].msg[i].amtUnstaked = true
---                     end
---                 end
---             end
---         end
 
---         table.insert(userTransactions.msg, {
---             messageId = msgId,
---             aoEthQuantity = -totalAmount,
---             projectTicker = tags["X-Ticker"],
---             ProjectTokenReceived = "",
---             ptReceived = false,
---             ptSent = false,
---             date = msg.Timestamp
---         })
-        
+    end
+)
 
---     end
--- )
-
+-- AOETH_TOKEN_PID = ""
 -- Handlers.add("DistributeAO", function(msg)
---     return msg.Action == "Credit-Notice" and msg.From == PROCESSIDOFAOETH
+--     return msg.Action == "Credit-Notice" and msg.From == AOETH_TOKEN_PID
 --     end,
 --     function(msg)
---         for k, v in ipairs(PROJECTS) do 
+--         for k, v in ipairs(PROJECTS) do
 --             -- volumeOfAll : total volume of assets bridged to the ao network
 --             -- yield : annual staking yield of aoEth
 --             local toSend = v.amountStaked * yield / volumeOfAll

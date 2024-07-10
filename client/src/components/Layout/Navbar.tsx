@@ -2,11 +2,11 @@ import { ConnectButton } from "arweave-wallet-kit";
 
 export default function Navbar() {
   return (
-    <nav className="flex justify-between items-center px-20 pt-[21px]">
+    <nav className="flex justify-between items-center px-[60px] pt-[21px] fadeIn">
       <a href="/">
-        <h1 className="text-[#eeeeee] uppercase text-[24px] font-bold">logo</h1>
+        <img src="/logo.svg" className="h-[30px] w-[150px]" />
       </a>
-      <div className="flex gap-[66px] text-[#eeeeee]">
+      <div className="flex gap-[120px] text-[#eeeeee] text-[18px] tracking-wider">
         <a
           href="/about"
           className="hover:text-[#40959D] hover:underline underline-offset-[3px]"
@@ -19,12 +19,12 @@ export default function Navbar() {
         >
           Your Profile
         </a>{" "}
-        <a
+        {/* <a
           className="hover:text-[#40959D] hover:underline underline-offset-[3px]"
           href="/profile"
         >
           Your Profile
-        </a>
+        </a> */}
       </div>
       <ConnectButton />
     </nav>

@@ -1,6 +1,5 @@
 import { useLocation } from "react-router-dom";
-import { ProjectsDisplay, ProjectFull } from "../components";
-import { dummyProject } from "../utils/constants";
+import { ProjectFull, ProjectsDisplay } from "../components";
 import { useProjects } from "../utils/hooks";
 
 export default function Project() {
@@ -22,7 +21,6 @@ export default function Project() {
           return <ProjectFull project={project} />;
         }
       })}
-
       <ProjectsDisplay />
     </main>
   );

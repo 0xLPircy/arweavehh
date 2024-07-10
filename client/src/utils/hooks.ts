@@ -53,7 +53,7 @@ export function useProject(id: string) {
 export function useUserData(address?: string) {
   const [allTransactions, setAllTransactions] = useState<UserTransaction[] | null>(null);
   const [pendingTransactions, setPendingTransactions] = useState<UserTransaction[] | null>(null);
-  // const [confirmedTransactions, setConfirmedTransactions] = useState<UserTransaction[] | null>(null);
+  const [confirmedTransactions, setConfirmedTransactions] = useState<UserTransaction[] | null>(null);
   const [stakedAmounts, setStakedAmounts] = useState<StakedAmounts | null>(null);
 
   useEffect(() => {
@@ -68,7 +68,7 @@ export function useUserData(address?: string) {
       console.log("get user data result", result);
       const transactions = JSON.parse(result.Messages[0].Data)?.msg ?? [];
       const pendingTransactions = transactions.filter((t: UserTransaction) => !t.ptSent);
-      const confirmedTransactions = transactions.filter((t: UserTransaction) => t.ptSent);
+      const confirmedTransactions = transactions.filter((t: UserTransaction) => t.ptSent && !t.amtUnstaked);
 
       const stakedAmounts = confirmedTransactions.reduce((acc: StakedAmounts, t: UserTransaction) => {
         const projectTicker = t.projectTicker;
@@ -82,13 +82,13 @@ export function useUserData(address?: string) {
 
       setAllTransactions(transactions);
       setPendingTransactions(pendingTransactions);
-      // setConfirmedTransactions(confirmedTransactions);
+      setConfirmedTransactions(confirmedTransactions);
     };
     fetch();
   }, [address]);
-  console.log("got transactions", stakedAmounts, pendingTransactions);
+  console.log({ allTransactions, stakedAmounts, confirmedTransactions, pendingTransactions });
 
-  return { stakedAmounts, allTransactions, pendingTransactions };
+  return { stakedAmounts, confirmedTransactions, allTransactions, pendingTransactions };
 }
 
 export function useUserAoETH(address?: string) {
@@ -105,7 +105,7 @@ export function useUserAoETH(address?: string) {
         anchor: "1234",
       });
       const aoeth = JSON.parse(result.Messages[0].Data);
-      setAoeth(aoeth);
+      setAoeth(aoeth / 10 ** 12);
     };
     fetch();
   }, [address]);

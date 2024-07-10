@@ -7,9 +7,9 @@ const ProjectsDisplay = () => {
   return (
     <section
       id="projects"
-      className="px-20 flex flex-col items-center justify-start gap-9"
+      className="px-20 flex flex-col items-center justify-start gap-9 fadeInScroll"
     >
-      <div className="flex flex-row justify-between w-full">
+      <div className="flex flex-row justify-between w-full ">
         <h3 className="text-[30px] text-[#40959D] font-[Rale-SemiBold]">
           Featured Projects
         </h3>
