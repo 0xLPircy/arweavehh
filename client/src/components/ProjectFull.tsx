@@ -7,6 +7,7 @@ import { ProjectType } from "../types/Project";
 import { stake } from "../utils/stake";
 import { ConnectButton, useActiveAddress } from "arweave-wallet-kit";
 import { useState } from "react";
+import { useStakeLoader } from "../utils/hooks";
 
 export default function ProjectFull({ project }: { project: ProjectType }) {
   const address = useActiveAddress();
@@ -16,7 +17,7 @@ export default function ProjectFull({ project }: { project: ProjectType }) {
 
   const {
     start,
-    stop,
+    // stop,
     projectConfirmedStake,
     receivedAoETH: recievedAoETH,
     rewardsSent,
