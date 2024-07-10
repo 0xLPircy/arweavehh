@@ -35,7 +35,15 @@ const Hero = () => {
         <Link to="/addProject">
           <button className="hover:bg-[#40959d36] hover:tracking-wider rounded-md w-[180px] py-[9px] border-[1px] border-[#40959D]">Add your project</button>
         </Link>
+<<<<<<< HEAD
+        <a href="https://github.com/0xLPircy/arweavehh">
+          <button className="hover:bg-[#40959ddf] hover:tracking-wider rounded-md w-[180px] py-[9px] bg-[#40959D]">
+            Explore
+          </button>
+        </a>
+=======
         <button className="hover:bg-[#40959ddf] hover:tracking-wider rounded-md w-[180px] py-[9px] bg-[#40959D]">Explore Projects</button>
+>>>>>>> cc1b0c4b0b3476791523e794b87847980a85a357
       </div>
     </section>
   );

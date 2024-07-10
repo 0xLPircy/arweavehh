@@ -1,11 +1,16 @@
 import { ConnectButton, useActiveAddress } from "arweave-wallet-kit";
+import { useEffect } from "react";
 import { UserProjectCard } from "../components";
 import { useProjects, useUserAoETH, useUserData } from "../utils/hooks";
 
 const User = () => {
   const address = useActiveAddress();
+  // const { connected } = useConnection();
   const { stakedAmounts, refresh: refreshUserTxns } = useUserData(address);
   const { aoeth: aoethBalance, refresh: refreshAoethBalance } = useUserAoETH(address);
+  useEffect(() => {
+    window.arweaveWallet.connect;
+  }, []);
 
   const projects = useProjects();
   if (!address)
