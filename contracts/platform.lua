@@ -11,24 +11,24 @@ _OUR_CUT = constants._OUR_CUT
 -- ENK3n22aHK0tSlDh54E1eXujnDroUgg8CPmUs8cfAKw - parth
 local PROJECTS = require("projects")
 
-TRANSACTION = TRANSACTION or {
-    {
-        user = "WGUCLSI5JUuOvqWczDFTmjBc-BgxbbaAdPCadK2xDbc",
-        msg = {
-            -- {
-            --         messageId = ""
-            --         aoEthQuantity = "100",
-            --         projectTicker = "SATP",
-            --         ProjectTokenReceived = "",
-            --         ptReceived = false,
-            --         ptSent = false,
-            --         amtUnstaked = false,
-            --         date = 5323543443323
-            -- },
-            --latest time stamp if past cooldown, unstake
-        }
-    }
-}
+TRANSACTION = TRANSACTION or {}
+-- {
+--     user = "WGUCLSI5JUuOvqWczDFTmjBc-BgxbbaAdPCadK2xDbc",
+--     msg = {
+--         -- {
+--         --         messageId = ""
+--         --         aoEthQuantity = "100",
+--         --         projectTicker = "SATP",
+--         --         ProjectTokenReceived = "",
+--         --         ptReceived = false,
+--         --         ptSent = false,
+--         --         amtUnstaked = false,
+--         --         date = 5323543443323
+--         -- },
+--         --latest time stamp if past cooldown, unstake
+--     }
+-- }
+
 
 
 
@@ -59,24 +59,29 @@ Handlers.add(
     function(msg)
         print("pt to user confirmed entered")
         local tags = msg.Tags
-        -- update project amount staked
-        PROJECTS = utils.map(function(val, key)
-            if (val.tokenProcess == msg.From) then
-                val.amountStaked = val.amountStaked + tonumber(msg.Quantity)
-            end
-            return val
-        end)(PROJECTS)
+
         -- local userTransactions = utils.find(function(val) return val.user == tags["X-User"] end)(TRANSACTION)
         -- userTransactions.msg[tags["X-MessageId"]]["ptSent"] = true
+        local quantityStaked = 0
         for k, v in ipairs(TRANSACTION) do
             if (v.user == msg.Recipient) then
                 for i, j in ipairs(TRANSACTION[k].msg) do
                     if (j.messageId == tags["X-MessageId"]) then
                         TRANSACTION[k].msg[i].ptSent = true
+                        quantityStaked = TRANSACTION[k].msg[i].aoEthQuantity
                     end
                 end
             end
         end
+
+        -- update project amount staked
+        PROJECTS = utils.map(function(val, key)
+            if (val.tokenProcess == msg.From) then
+                val.amountStaked = val.amountStaked + tonumber(quantityStaked)
+            end
+            return val
+        end)(PROJECTS)
+
         print("pt to user confirmed left")
     end
 )
@@ -202,7 +207,7 @@ Handlers.add("Unstaking AoETH", Handlers.utils.hasMatchingTag("Action", "Unstake
         end, userProjectTransactions[1], userProjectTransactions)
 
 
---         local cooldownPeriod = project.cooldownPeriod
+        local cooldownPeriod = project.cooldownPeriod
 
         assert(msg.Timestamp - latestTxn.date > cooldownPeriod,
             "You cannot unstake before the cooldown period, still have " ..
@@ -215,6 +220,14 @@ Handlers.add("Unstaking AoETH", Handlers.utils.hasMatchingTag("Action", "Unstake
         end, 0, userProjectTransactions)
 
         print("total amount" .. tostring(totalAmount))
+
+        -- update the project amount staked
+        PROJECTS = utils.map(function(val, key)
+            if (val.ticker == projectTicker) then
+                val.amountStaked = val.amountStaked - totalAmount
+            end
+            return val
+        end)(PROJECTS)
 
         for k, v in ipairs(TRANSACTION) do
             if (v.user == msg.From) then
@@ -229,16 +242,25 @@ Handlers.add("Unstaking AoETH", Handlers.utils.hasMatchingTag("Action", "Unstake
         print("updated transactions")
 
         table.insert(userTransactions.msg, {
-            messageId = msgId,
+            messageId = msg.Id,
             aoEthQuantity = -totalAmount,
-            projectTicker = tags["X-Ticker"],
+            projectTicker = projectTicker,
             ProjectTokenReceived = "",
             ptReceived = false,
             ptSent = false,
+            amtUnstaked = true,
             date = msg.Timestamp
         })
-        
 
+        Send({
+            Target = AOETH_TOKEN_PID,
+            Action = "Transfer",
+            Quantity = tostring(totalAmount),
+            Recipient = msg.From,
+            ["X-Action"] = "Unstake",
+            ["X-Ticker"] = projectTicker,
+            ["X-MessageId"] = msg.Id
+        })
     end
 )
 
