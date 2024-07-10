@@ -6,18 +6,33 @@ import x from "/icons/x.svg";
 import { ProjectType } from "../types/Project";
 import { stake } from "../utils/stake";
 import { ConnectButton, useActiveAddress } from "arweave-wallet-kit";
-import { useStakeLoader } from "../utils/hooks";
+import { useState } from "react";
 
 export default function ProjectFull({ project }: { project: ProjectType }) {
   const address = useActiveAddress();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [amount, setAmount] = useState("");
+
   const { start, stop, projectConfirmedStake, receivedAoETH: recievedAoETH, rewardsSent } = useStakeLoader(project, address);
-  if (!address) return <div>Connect Wallet</div>;
 
   console.log({ projectConfirmedStake, recievedAoETH, rewardsSent });
-  if (rewardsSent) {
-    stop();
-    return <div className="text-white">Stake Successful</div>;
-  }
+
+  const availableAOEth = 500;
+
+  const handleMaxClick = () => {
+    setAmount(availableAOEth.toString());
+  };
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setAmount(event.target.value);
+  };
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
 
   return (
     <div className=" overflow-hidden">
@@ -94,6 +109,61 @@ export default function ProjectFull({ project }: { project: ProjectType }) {
             <ConnectButton />
           )}
         </div>
+        {/* dummy code */}
+        <button onClick={openModal} className="px-4 py-2 font-semibold text-white bg-blue-500 rounded hover:bg-blue-700">
+          Open Modal
+        </button>
+
+        {isModalOpen && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center w-full h-full bg-black bg-opacity-50 backdrop-blur-sm">
+            {/* <div className="relative w-fit p-6 bg-[#] rounded shadow-lg">
+              <img src=""/>
+              <button
+                onClick={closeModal}
+                className="absolute top-2 right-2 text-xl font-bold text-gray-600 hover:text-gray-900"
+              >
+                &times;
+              </button>
+              <p className="text-center">Hello World</p>
+            </div> */}
+            <div className="relative w-fit max-w-[450px] bg-[#111111] p-8 rounded-lg ">
+              <button onClick={closeModal} className="absolute top-2 right-2 text-xl font-bold text-gray-600 hover:text-gray-900">
+                &times;
+              </button>
+              <h2 className="text-[30px] font-semibold text-[#f1f1f1]">
+                <span className="text-[#40959D]">Stake </span>$AOEth <span className="text-[#40959D]">and get </span>
+                $SAT <span className="text-[#40959D]">in return</span>
+              </h2>
+              <div className="mb-6">
+                <div className="text-[#40959D]">
+                  Available $AOEth: <span className="font-semibold text-[#f1f1f1] lining-figures">{availableAOEth}</span>
+                </div>
+                <h4 className="text-[#8D8D8D] font-[Rale-SemiBold] text-[13.5px]">Enter quantity of $AOEth to be staked</h4>
+                <div
+                  className="flex items-center justify-between rounded bg-[#1A1A1A] text-[#f1f1f1]
+                pl-2"
+                >
+                  <input
+                    type="number"
+                    value={amount}
+                    onChange={handleChange}
+                    // placeholder="Enter quantity of $AOEth to be staked"
+                    className="bg-[#00000000] p-2 w-full h-full"
+                  />
+                  <div className="h-full min-w-fit">
+                    <button onClick={handleMaxClick} className="bg-[#111111] border-[2px] border-[#121212] text-white px-3 py-2 rounded min-w-fit m-2">
+                      GO MAX
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div className="bg-[#1A1A1A] p-4 rounded mb-6 max-w-[75%]">
+                <p className="text-[#8D8D8D] text-[12px]">On staking xyz $AOEth you may receive abc of $SAT per day in your wallet after a cool down period of 24 hours.</p>
+              </div>
+              <button className="w-fit bg-[#205156] text-[#f1f1f1] py-[6px] px-[18px] rounded">Stake $AOEth</button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

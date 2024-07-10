@@ -5,10 +5,155 @@
 * {
   transition: all 0.6s;
 }
+html {
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+}
 
 body {
   background-color: #111111;
 }
+
+/* ANIMS */
+.fadeInScroll {
+  animation: fade-in-scroll linear;
+  animation-timeline: view();
+}
+
+@keyframes fade-in-scroll {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.ttbAnim {
+  animation: top-to-bottom-arch-scroll 1.2s linear;
+  opacity: 1;
+}
+@keyframes top-to-bottom-arch-scroll {
+  0% {
+    transform: translateY(-60%);
+    opacity: 0;
+  }
+  60% {
+    transform: translateY(10%);
+  }
+  100% {
+    transform: translateY(0%);
+    opacity: 1;
+  }
+}
+
+.ltrAnim {
+  animation: left-to-right 1.2s linear;
+}
+@keyframes left-to-right {
+  0% {
+    transform: translateX(-50%);
+    opacity: 0;
+  }
+  85% {
+    transform: translateX(10%);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(0%);
+    opacity: 1;
+  }
+}
+
+.rtlAnim {
+  animation: right-to-left 1.2s linear;
+  opacity: 1;
+}
+@keyframes right-to-left {
+  0% {
+    transform: translateX(50%);
+    opacity: 0;
+  }
+  85% {
+    transform: translateX(-10%);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(0%);
+    opacity: 1;
+  }
+}
+
+.fadeIn {
+  animation: fade-in 1.2s linear;
+  opacity: 1;
+}
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+.ltr {
+  animation: ltr 2s infinite;
+}
+
+@keyframes ltr {
+  0% {
+    opacity: 0;
+    transform: translateY(-330%) translateX(-210%);
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-330%) translateX(330%);
+  }
+}
+
+.rtl {
+  animation: rtl 2s infinite;
+}
+
+@keyframes rtl {
+  0% {
+    opacity: 0;
+    transform: translateY(0%) translateX(210%);
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(0%) translateX(-330%);
+  }
+}
+
+.ttb {
+  animation: ttb 2s infinite;
+}
+
+@keyframes ttb {
+  0% {
+    opacity: 0;
+    transform: translateY(100%) translateX(-3%);
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(360%) translateX(-3%);
+  }
+}
+
 /* RALEWAY */
 .lining-figures {
   font-feature-settings: "lnum";

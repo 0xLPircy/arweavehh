@@ -1,8 +1,9 @@
 const Footer = () => {
   return (
     <footer className="flex flex-row justify-between items-center px-20 py-[24px]">
-      {/* <img /> */}
-      <h1 className="font-[Rale-Bold] text-[24px] text-[#f1f1f1]">LOGO</h1>
+      <a href="/">
+        <img src="/logo.svg" className="h-[30px] w-[150px]" />
+      </a>
       <div className="flex flex-row gap-[39px] text-[#40959D] text-[18px] font-[Rale-Medium]">
         <h4 className="hover:opacity-90 hover:underline underline-offset-[3px] hover:cursor-pointer">
           About Us

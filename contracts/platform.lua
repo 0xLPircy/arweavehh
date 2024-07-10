@@ -202,7 +202,7 @@ Handlers.add("Unstaking AoETH", Handlers.utils.hasMatchingTag("Action", "Unstake
         end, userProjectTransactions[1], userProjectTransactions)
 
 
-        local cooldownPeriod = project.cooldownPeriod
+--         local cooldownPeriod = project.cooldownPeriod
 
         assert(msg.Timestamp - latestTxn.date > cooldownPeriod,
             "You cannot unstake before the cooldown period, still have " ..
@@ -229,25 +229,16 @@ Handlers.add("Unstaking AoETH", Handlers.utils.hasMatchingTag("Action", "Unstake
         print("updated transactions")
 
         table.insert(userTransactions.msg, {
-            messageId = msg.Id,
+            messageId = msgId,
             aoEthQuantity = -totalAmount,
-            projectTicker = projectTicker,
+            projectTicker = tags["X-Ticker"],
             ProjectTokenReceived = "",
             ptReceived = false,
             ptSent = false,
-            amtUnstaked = true,
             date = msg.Timestamp
         })
+        
 
-        Send({
-            Target = AOETH_TOKEN_PID,
-            Action = "Transfer",
-            Quantity = tostring(totalAmount),
-            Recipient = msg.From,
-            ["X-Action"] = "Unstake",
-            ["X-Ticker"] = projectTicker,
-            ["X-MessageId"] = msg.Id
-        })
     end
 )
 

@@ -7,7 +7,9 @@ export default function Project() {
   const location = useLocation();
 
   // Split the pathname into segments and filter out any empty segments
-  const pathSegments = location.pathname.split("/").filter((segment) => segment);
+  const pathSegments = location.pathname
+    .split("/")
+    .filter((segment) => segment);
 
   // Get the last segment
   const lastSegment = pathSegments[pathSegments.length - 1];
@@ -18,7 +20,6 @@ export default function Project() {
           return <ProjectFull project={project} />;
         }
       })}
-
       <ProjectsDisplay />
     </main>
   );
