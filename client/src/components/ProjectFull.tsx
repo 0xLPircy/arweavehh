@@ -9,6 +9,7 @@ import { ConnectButton, useActiveAddress } from "arweave-wallet-kit";
 import { useState } from "react";
 import { useStakeLoader, useUserAoETH } from "../utils/hooks";
 import Loader from "./Loader";
+import { humanizeDuration } from "../utils/helpers";
 
 export default function ProjectFull({ project }: { project: ProjectType }) {
   const address = useActiveAddress();
@@ -111,7 +112,7 @@ export default function ProjectFull({ project }: { project: ProjectType }) {
         <div className="flex flex-col gap-[18px]">
           <h3 className="text-[30px] text-[#40959D] font-[Rale-SemiBold]">Stake Details</h3>
           <p className="text-[#f1f1f1] text-[15px]">
-            Cooldown Period : <span className="text-[#40959D]">{project.cooldownPeriod} seconds</span>
+            Cooldown Period : <span className="text-[#40959D]">{humanizeDuration(project.cooldownPeriod)}</span>
             <br />
             Reward:{" "}
             <span className="text-[#40959D]">
@@ -140,7 +141,7 @@ export default function ProjectFull({ project }: { project: ProjectType }) {
               </button>
               {step == "1" && (
                 <>
-                  <button onClick={closeModal} className="absolute top-2 right-2 text-xl font-bold text-gray-600 hover:text-gray-900">
+                  <button onClick={closeModal} className="absolute top-2 right-2 text-2xl font-bold text-gray-500 hover:text-gray-600">
                     &times;
                   </button>
                   <h2 className="text-[30px] font-semibold text-[#f1f1f1]">
@@ -172,7 +173,9 @@ export default function ProjectFull({ project }: { project: ProjectType }) {
                     </div>
                   </div>
                   <div className="bg-[#1A1A1A] p-4 rounded mb-6 max-w-[100%]">
-                    <p className="text-[#8D8D8D] text-[12px]">{`On staking $AOEth you will receive abc of $${project.ticker}. There is a cool down period of 24 hours for unstaking your $AOEth.`}</p>
+                    <p className="text-[#8D8D8D] text-[12px]">{`On staking $AOEth you will receive ${amount ? parseFloat(amount) * project.aoethRewardRate : "-"} of $${
+                      project.ticker
+                    }. There is a cool down period of ${humanizeDuration(project.cooldownPeriod)} for unstaking your $AOEth.`}</p>
                   </div>
                   <button
                     onClick={async () => {
