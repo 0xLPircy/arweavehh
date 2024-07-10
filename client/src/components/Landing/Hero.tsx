@@ -6,9 +6,9 @@ const Hero = () => {
   return (
     <section className="w-[100vw] text-[#eeeeee] flex flex-col justify-center items-center px-20 pt-[15px] pb-[90px]">
       <div className="relative flex flex-row justify-between items-center w-full">
-        <div className="absolute">
+        {/* <div className="absolute">
           <img src="/WhiteGrid.svg" className="w-[390px] h-[390px]" />
-        </div>
+        </div> */}
         {/* <div className="flex flex-col justify-between items-center w-fit gap-28">
           <HeroStats stat="50%" text=" Projects Built on Arweave" />
           <HeroStats stat="50%" text=" Projects Built on Arweave" />

@@ -1,4 +1,4 @@
-import { useActiveAddress } from "arweave-wallet-kit";
+import { ConnectButton, useActiveAddress } from "arweave-wallet-kit";
 import { UserProjectCard } from "../components";
 import { useProjects, useUserAoETH, useUserData } from "../utils/hooks";
 
@@ -8,7 +8,12 @@ const User = () => {
   const { aoeth: aoethBalance, refresh: refreshAoethBalance } = useUserAoETH(address);
 
   const projects = useProjects();
-  if (!address) return <div className="text-white">Connect Wallet</div>;
+  if (!address)
+    return (
+      <div className="text-white flex justify-center items-start h-60">
+        <ConnectButton />
+      </div>
+    );
   // if (!stakedAmounts) return;
   // return (
   //   <div className="flex items-center justify-center h-screen">
