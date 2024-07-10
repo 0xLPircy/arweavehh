@@ -135,8 +135,8 @@ PROJECTS = {
         id = "SAM",
         amountStaked = 0,
         name = "Smart Auditing and Monitoring",
-        description = "Vulnerabilities auditing on us, contracting is on you"
-        logo = "https://arweavehh.vercel.app/VCOIN.jpeg",
+        description = "Vulnerabilities auditing on us, contracting is on you",
+        logo = "https://arweavehh.vercel.app/vite.svg",
         ticker = "SAM",
         cooldownPeriod = 60 * 60 * 24 * 3, -- 3 days in seconds
         aoethRewardRate = 30,              -- for 1 aoeth, how many tokens of reward
@@ -157,9 +157,9 @@ PROJECTS = {
                 photo = "",
             },
             {
-                name="Haard Solanki",
-                designation="Developer",
-                photo=""
+                name = "Haard Solanki",
+                designation = "Developer",
+                photo = ""
             }
         },
         socials = {
@@ -169,7 +169,64 @@ PROJECTS = {
             github = "github.com/haard18",
         },
     },
+    {
+        process = "",
+        tokenProcess = "-",
+        id = "SAM",
+        amountStaked = 0,
+        name = "The LOOM",
+        description = "A Metaverse on AO",
+        logo = "https://arweavehh.vercel.app/loom.jpeg",
+        ticker = "SAM",
+        cooldownPeriod = 60 * 60 * 24 * 3, -- 3 days in seconds
+        aoethRewardRate = 30,              -- for 1 aoeth, how many tokens of reward
+        founders = {
+            {
+                name = "Mystic",
+                designation = "Developer",
+                photo = "",
+            },
+        },
+        socials = {
+            website = "",
+            x = "mystic",
+            discord = "",
+            github = "github.com/haard18",
+        },
+    },
+    {
+        process = "RdiOs7wNV7g-rZfb2IpnnrzTAMpljSwZZRNQOx8-cR8",
+        tokenProcess = "RdiOs7wNV7g-rZfb2IpnnrzTAMpljSwZZRNQOx8-cR8",
+        id = "REBEL",
+        amountStaked = 0,
+        name = "Rebel",
+        description =
+        "Session based Web3 Cloud Gamming Infrastructure focused on providing quality experience to all users",
+        logo = "https://arweavehh.vercel.app/rebel.png",
+        ticker = "NAP",
+        cooldownPeriod = 60 * 60 * 24 * 3, -- 3 days in seconds
+        aoethRewardRate = 30,              -- for 1 aoeth, how many tokens of reward
+        founders = {
+            {
+                name = "Nisarg Thakkar",
+                designation = "Developer",
+                photo = "",
+            },
+            {
+                name = "Pawan AK",
+                designation = "Developer",
+                photo = "",
+            },
+        },
+        socials = {
+            website = "https://arweave-web.vercel.app",
+            x = "",
+            discord = "",
+            github = "",
+        },
+    },
 }
+
 
 
 Handlers.add("Get All Projects", function(msg)
