@@ -7,6 +7,7 @@ import { ProjectType } from "../types/Project";
 import { stake } from "../utils/stake";
 import { ConnectButton, useActiveAddress } from "arweave-wallet-kit";
 import { useState } from "react";
+import { useStakeLoader, useUserAoETH } from "../utils/hooks";
 
 export default function ProjectFull({ project }: { project: ProjectType }) {
   const address = useActiveAddress();
@@ -17,13 +18,22 @@ export default function ProjectFull({ project }: { project: ProjectType }) {
 
   console.log({ projectConfirmedStake, recievedAoETH, rewardsSent });
 
-  const availableAOEth = 500;
+  const availableAOEth = useUserAoETH(address).aoeth ?? 0;
 
   const handleMaxClick = () => {
     setAmount(availableAOEth.toString());
   };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newValue = event.target.value;
+    if (newValue === "" || Number(newValue) < 0) {
+      setAmount("");
+      return;
+    }
+    if (Number(newValue) > availableAOEth) {
+      setAmount(availableAOEth.toString());
+      return;
+    }
     setAmount(event.target.value);
   };
   const openModal = () => {
