@@ -2,11 +2,12 @@ import { createDataItemSigner, message, result } from "@permaweb/aoconnect";
 import { AOETH_TOKEN_PID, PLATFORM_PID } from "./constants";
 import { ProjectType } from "../types/Project";
 
-const quantity = 1100000000000;
+// const quantity = 1100000000000;
 
-export const stake = async (projectData: ProjectType, address?: string) => {
+export const stake = async (projectData: ProjectType, tokenAmt: number, address?: string) => {
   if (!address) return;
   console.log("stake");
+  const quantity = tokenAmt * 10 ** 12;
   // Call the backend API to stake the tokens
   const res = await message({
     process: AOETH_TOKEN_PID,
