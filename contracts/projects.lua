@@ -11,7 +11,7 @@ PROJECTS = PROJECTS or {
         amountStaked = 0,
         name = "Saturn",
         description = "A revolutionary project aiming to explore the outer limits of blockchain technology.",
-        logo ="https://arweavehh.vercel.app//SATP.svg",
+        logo = "https://arweavehh.vercel.app//SATP.svg",
         ticker = "SATP",
         cooldownPeriod = 60,  -- 60 seconds
         aoethRewardRate = 10, -- for 1 aoeth, how many tokens of reward
@@ -19,12 +19,12 @@ PROJECTS = PROJECTS or {
             {
                 name = "Alice Johnson",
                 designation = "CEO",
-                photo ="https://arweavehh.vercel.app/founders/saturnfounder1.png",
+                photo = "https://arweavehh.vercel.app/founders/saturnfounder1.png",
             },
             {
                 name = "Bob Smith",
                 designation = "CTO",
-                photo ="https://arweavehh.vercel.app/founders/saturnfounder2.png
+                photo = "https://arweavehh.vercel.app/founders/saturnfounder2.png"
             },
         },
         socials = {
@@ -41,7 +41,7 @@ PROJECTS = PROJECTS or {
         amountStaked = 0,
         name = "0rbit",
         description = "Decentralized Oracle Network on Arweave | Get ACCESS to LIMITLESS DATA",
-        logo ="https://arweavehh.vercel.app/0RBT.svg",
+        logo = "https://arweavehh.vercel.app/0RBT.svg",
         ticker = "0RBT",
         cooldownPeriod = 60 * 60 * 24 * 3, -- 3 days in seconds
         aoethRewardRate = 30,              -- for 1 aoeth, how many tokens of reward
@@ -49,12 +49,12 @@ PROJECTS = PROJECTS or {
             {
                 name = "Lucifer0x17",
                 designation = "Founder",
-                photo ="",
+                photo = "",
             },
             {
                 name = "Megabyte",
                 designation = "Co-Founder",
-                photo ="",
+                photo = "",
             },
         },
         socials = {
@@ -71,7 +71,7 @@ PROJECTS = PROJECTS or {
         amountStaked = 0,
         name = "BetterIDEa",
         description = "One stop env for devs on Arweave",
-        logo ="https://arweavehh.vercel.app/NEO.svg",
+        logo = "https://arweavehh.vercel.app/NEO.svg",
         ticker = "NEO",
         cooldownPeriod = 60 * 60 * 24 * 3, -- 3 days in seconds
         aoethRewardRate = 30,              -- for 1 aoeth, how many tokens of reward
@@ -79,12 +79,12 @@ PROJECTS = PROJECTS or {
             {
                 name = "Ankush",
                 designation = "Founder",
-                photo ="https://arweavehh.vercel.app/founders/betterideafounder1.png",
+                photo = "https://arweavehh.vercel.app/founders/betterideafounder1.png",
             },
             {
                 name = "Farat",
                 designation = "Principle Designer",
-                photo ="https://arweavehh.vercel.app/founders/betterideafound2.png",
+                photo = "https://arweavehh.vercel.app/founders/betterideafound2.png",
             },
         },
         socials = {
