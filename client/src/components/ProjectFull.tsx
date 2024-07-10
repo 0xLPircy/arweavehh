@@ -7,31 +7,46 @@ import { ProjectType } from "../types/Project";
 import { stake } from "../utils/stake";
 import { ConnectButton, useActiveAddress } from "arweave-wallet-kit";
 import { useState } from "react";
-import { useStakeLoader } from "../utils/hooks";
+import { useStakeLoader, useUserAoETH } from "../utils/hooks";
+import Loader from "./Loader";
+import { humanizeDuration } from "../utils/helpers";
 
 export default function ProjectFull({ project }: { project: ProjectType }) {
   const address = useActiveAddress();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [step, setStep] = useState("0");
   const [amount, setAmount] = useState("");
+  const [stakeLoading, setStakeLoading] = useState(false);
 
   const {
     start,
-    // stop,
+    stop,
     projectConfirmedStake,
     receivedAoETH: recievedAoETH,
     rewardsSent,
   } = useStakeLoader(project, address);
+  if (step == "2" && rewardsSent) {
+    stop();
+  }
 
   console.log({ projectConfirmedStake, recievedAoETH, rewardsSent });
 
-  const availableAOEth = 500;
+  const availableAOEth = useUserAoETH(address).aoeth ?? 0;
 
   const handleMaxClick = () => {
     setAmount(availableAOEth.toString());
   };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newValue = event.target.value;
+    if (newValue === "" || Number(newValue) < 0) {
+      setAmount("");
+      return;
+    }
+    if (Number(newValue) > availableAOEth) {
+      setAmount(availableAOEth.toString());
+      return;
+    }
     setAmount(event.target.value);
   };
   const openModal = () => {
@@ -41,6 +56,8 @@ export default function ProjectFull({ project }: { project: ProjectType }) {
 
   const closeModal = () => {
     setIsModalOpen(false);
+    setStakeLoading(false);
+    setAmount("");
     setStep("0");
   };
 
@@ -148,17 +165,20 @@ export default function ProjectFull({ project }: { project: ProjectType }) {
             Stake Details
           </h3>
           <p className="text-[#f1f1f1] text-[15px]">
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eius ex
-            perspiciatis assumenda suscipit soluta voluptate id fugiat totam
-            vitae veritatis cumque nam eligendi ipsam voluptatum, ratione error
-            mollitia, saepe architecto.
+            Cooldown Period :{" "}
+            <span className="text-[#40959D]">
+              {humanizeDuration(project.cooldownPeriod)}
+            </span>
+            <br />
+            Reward:{" "}
+            <span className="text-[#40959D]">
+              1 $AOEth = {project.aoethRewardRate} ${project.ticker}
+            </span>
           </p>
           {address ? (
             <button
               onClick={async () => {
-                const startDate = new Date();
-                await stake(project, address);
-                start(startDate);
+                openModal();
               }}
               className="bg-[#40959D] rounded-md px-[24px] py-[3px] w-fit"
             >
@@ -168,39 +188,29 @@ export default function ProjectFull({ project }: { project: ProjectType }) {
             <ConnectButton />
           )}
         </div>
-        {/* dummy code */}
-        <button
-          onClick={openModal}
-          className="px-4 py-2 font-semibold text-white bg-blue-500 rounded hover:bg-blue-700"
-        >
-          Open Modal
-        </button>
 
         {isModalOpen && (
           <div className="fixed inset-0 z-50 flex items-center justify-center w-full h-full bg-black bg-opacity-50 backdrop-blur-sm">
-            {/* <div className="relative w-fit p-6 bg-[#] rounded shadow-lg">
-              <img src=""/>
+            <div className="relative w-fit max-w-[450px] bg-[#111111] p-8 rounded-lg ">
               <button
                 onClick={closeModal}
                 className="absolute top-2 right-2 text-xl font-bold text-gray-600 hover:text-gray-900"
               >
                 &times;
               </button>
-              <p className="text-center">Hello World</p>
-            </div> */}
-            <div className="relative w-fit max-w-[450px] bg-[#111111] p-8 rounded-lg ">
               {step == "1" && (
                 <>
                   <button
                     onClick={closeModal}
-                    className="absolute top-2 right-2 text-xl font-bold text-gray-600 hover:text-gray-900"
+                    className="absolute top-2 right-2 text-2xl font-bold text-gray-500 hover:text-gray-600"
                   >
                     &times;
                   </button>
                   <h2 className="text-[30px] font-semibold text-[#f1f1f1]">
-                    <span className="text-[#40959D]">Stake </span>$AOEth{" "}
-                    <span className="text-[#40959D]">and get </span>
-                    $SAT <span className="text-[#40959D]">in return</span>
+                    <span className="text-[#40959D]">Stake </span>$AOEth,{" "}
+                    <span className="text-[#40959D]"> Get </span>$
+                    {project.ticker}{" "}
+                    {/* <span className="text-[#40959D]">in return</span> */}
                   </h2>
                   <div className="mb-6">
                     <div className="text-[#40959D]">
@@ -217,10 +227,11 @@ export default function ProjectFull({ project }: { project: ProjectType }) {
                 pl-2"
                     >
                       <input
+                        disabled={stakeLoading}
                         type="number"
                         value={amount}
                         onChange={handleChange}
-                        // placeholder="Enter quantity of $AOEth to be staked"
+                        title="$AOEth to be staked"
                         className="bg-[#00000000] p-2 w-full h-full"
                       />
                       <div className="h-full min-w-fit">
@@ -233,53 +244,113 @@ export default function ProjectFull({ project }: { project: ProjectType }) {
                       </div>
                     </div>
                   </div>
-                  <div className="bg-[#1A1A1A] p-4 rounded mb-6 max-w-[75%]">
-                    <p className="text-[#8D8D8D] text-[12px]">
-                      On staking xyz $AOEth you may receive abc of $SAT per day
-                      in your wallet after a cool down period of 24 hours.
-                    </p>
+                  <div className="bg-[#1A1A1A] p-4 rounded mb-6 max-w-[100%]">
+                    <p className="text-[#8D8D8D] text-[12px]">{`On staking $AOEth you will receive ${
+                      amount
+                        ? parseFloat(amount) * project.aoethRewardRate
+                        : "-"
+                    } of $${
+                      project.ticker
+                    }. There is a cool down period of ${humanizeDuration(
+                      project.cooldownPeriod
+                    )} for unstaking your $AOEth.`}</p>
                   </div>
                   <button
-                    onClick={() => {
+                    onClick={async () => {
+                      setStakeLoading(true);
+                      const startDate = new Date();
+                      await stake(project, parseFloat(amount), address);
+                      start(startDate);
                       setStep("2");
+                      setStakeLoading(false);
                     }}
-                    className="w-fit bg-[#205156] text-[#f1f1f1] py-[6px] px-[18px] rounded"
+                    disabled={
+                      amount === "" ||
+                      parseFloat(amount) <= 0 ||
+                      parseFloat(amount) > availableAOEth ||
+                      stakeLoading
+                    }
+                    className={`flex gap-4 w-fit ${
+                      stakeLoading ? "bg-gray-400" : "bg-[#205156]"
+                    } text-[#f1f1f1] py-[6px] px-[18px] rounded`}
                   >
+                    {stakeLoading ? <Loader /> : ""}
                     Stake $AOEth
                   </button>
                 </>
               )}
               {step == "2" && (
                 <div className="relative">
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="w-1 h-full bg-teal-300"></div>
+                  <div className="absolute h-0 inset-0 flex mt-2 ml-2">
+                    <div className="w-1 h-[100px] bg-teal-300"></div>
                   </div>
                   <div className="relative z-10 flex flex-col space-y-6">
                     <div className="flex items-center">
-                      <div className="flex items-center justify-center w-6 h-6 rounded-full bg-teal-600 text-white">
+                      <div
+                        className={`flex items-center justify-center w-6 h-6 rounded-full border-teal-600 ${
+                          recievedAoETH ? "bg-teal-600" : "bg-gray-800"
+                        }  text-white`}
+                      >
                         ✓
                       </div>
-                      <div className="ml-4 text-teal-300 text-lg">
-                        500 $AOEth staked on saturn
+                      <div
+                        className={`ml-4 ${
+                          recievedAoETH ? "text-teal-300" : "text-white"
+                        } text-lg`}
+                      >
+                        {amount} $AOEth staked on {project.name}
                       </div>
                     </div>
                     <div className="flex items-center">
-                      <div className="flex items-center justify-center w-6 h-6 rounded-full bg-teal-600 text-white">
+                      <div
+                        className={`flex items-center justify-center w-6 h-6 rounded-full border-teal-600 ${
+                          projectConfirmedStake ? "bg-teal-600" : "bg-gray-800"
+                        } text-white`}
+                      >
                         ✓
                       </div>
-                      <div className="ml-4 text-teal-300 text-lg">
-                        Saturn received equivalent $AO
+                      <div
+                        className={`ml-4 ${
+                          projectConfirmedStake ? "text-teal-300" : "text-white"
+                        } text-lg`}
+                      >
+                        {project.name} confirmed deposit
                       </div>
                     </div>
                     <div className="flex items-center">
-                      <div className="flex items-center justify-center w-6 h-6 rounded-full border-2 border-teal-600 bg-gray-800 text-white">
-                        <div className="w-3 h-3 bg-teal-600 rounded-full"></div>
+                      <div
+                        className={`flex items-center justify-center w-6 h-6 rounded-full border-teal-600 ${
+                          rewardsSent ? "bg-teal-600" : "bg-gray-800"
+                        } text-white`}
+                      >
+                        ✓
                       </div>
-                      <div className="ml-4 text-white text-lg">
-                        $SAT added in your wallet
+
+                      <div
+                        className={`ml-4 ${
+                          rewardsSent ? "text-teal-300" : "text-white"
+                        } text-lg`}
+                      >
+                        ${project.ticker} reward sent to your wallet
                       </div>
                     </div>
                   </div>
+                  <button
+                    disabled={!rewardsSent}
+                    onClick={() => (window.location.href = "/profile")}
+                    className={`${
+                      !rewardsSent ? "bg-gray-400" : "bg-[#205156]"
+                    } text-[#f1f1f1] py-[6px] px-[18px] rounded m-4`}
+                  >
+                    {rewardsSent ? (
+                      "See Your Profile"
+                    ) : (
+                      <div className="flex gap-4">
+                        <Loader />
+                        Confirming Transaction
+                      </div>
+                    )}
+                  </button>
                 </div>
               )}
             </div>

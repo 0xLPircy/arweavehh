@@ -150,8 +150,8 @@ export function useUserData(address?: string) {
     getNewData();
   }, [address]);
 
-  const refresh = () => {
-    getNewData();
+  const refresh = async () => {
+    await getNewData();
   };
 
   return {
@@ -183,8 +183,8 @@ export function useUserAoETH(address?: string) {
     fetchData();
   }, [address]);
 
-  const refresh = () => {
-    fetchData();
+  const refresh = async () => {
+    await fetchData();
   };
 
   return { aoeth, refresh };
@@ -197,6 +197,12 @@ export const useStakeLoader = (projectData: ProjectType, address?: string) => {
   const [rewardsSent, setRewardsSent] = useState<boolean>(false);
 
   const [timer, setTimer] = useState<NodeJS.Timeout | null>(null);
+
+  useEffect(() => {
+    setRecievedAoETH(false);
+    setProjectConfirmedStake(false);
+    setRewardsSent(false);
+  }, [address, projectData]);
 
   const start = (startDate: Date) => {
     setTimer(
