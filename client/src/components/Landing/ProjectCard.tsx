@@ -1,12 +1,13 @@
 // import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { ProjectType } from "../../types/Project";
 
 export default function ProjectCard({ project }: { project: ProjectType }) {
   //   const navigate = useNavigate();
 
   return (
-    <a
-      href={"/project/" + project.ticker}
+    <Link
+      to={"/project/" + project.ticker}
       className="max-w-[390px] rounded-lg border-[1px] border-[#40959D]
       flex flex-col gap-[6px] justify-between items-center py-[15px] px-[21px]"
     >
@@ -25,6 +26,6 @@ export default function ProjectCard({ project }: { project: ProjectType }) {
           {(project.amountStaked / 10 ** 12).toFixed(2)} $AOEth Staked
         </h3>
       </div>
-    </a>
+    </Link>
   );
 }
