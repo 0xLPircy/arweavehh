@@ -94,6 +94,41 @@ PROJECTS = PROJECTS or {
             github = "https://github.com/ankushKun/betteride",
         },
     },
+    {
+        process = "",
+        tokenProcess = "",
+        id = "AOVest",
+        amountStaked = 0,
+        name = "AOVest",
+        description = "Token Vesting for projects to implement streaming of their tokens",
+        logo = "",
+        ticker = "VCOIN",
+        cooldownPeriod = 60 * 60 * 24 * 3, -- 3 days in seconds
+        aoethRewardRate = 30,              -- for 1 aoeth, how many tokens of reward
+        founders = {
+            {
+                name = "Sidarth Manjun",
+                designation = "Developer",
+                photo = "",
+            },
+            {
+                name = "Sai Rupa Netha Yarramada",
+                designation = "Designer",
+                photo = "",
+            },
+            {
+                name = "Kunal Garg",
+                designation = "Developer",
+                photo = "",
+            },
+        },
+        socials = {
+            website = "",
+            x = "",
+            discord = "",
+            github = "",
+        },
+    },
 }
 
 Handlers.add("Get All Projects", function(msg)
