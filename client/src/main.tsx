@@ -8,6 +8,7 @@ import Project from "./pages/Project.tsx";
 import { Navbar, Footer } from "./components";
 import User from "./pages/User.tsx";
 import AddProject from "./pages/AddProject.tsx";
+import About from "./pages/About.tsx";
 
 const router = createBrowserRouter([
   {
@@ -25,6 +26,10 @@ const router = createBrowserRouter([
   {
     path: "/addProject",
     element: <AddProject />,
+  },
+  {
+    path: "/about",
+    element: <About />,
   },
 ]);
 
