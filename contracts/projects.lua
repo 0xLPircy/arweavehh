@@ -37,6 +37,39 @@ PROJECTS = {
             github = "https://github.com/saturn",
         },
     },
+    {
+        process = "-XmuU-RfMRBRu4GjzX7v5SWlBGZhsY",
+        tokenProcess = "1mCv9ODdJsHWhxVVhckX7uewWpgWakSaTot6Y",
+        id = "mar",
+        amountStaked = 1.5,
+        name = "Mars",
+        description = "A revolutionary project aiming to explore the outer limits of blockchain technology.",
+        logo =
+        "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/wcAAgEBALqlU/cAAAAASUVORK5CYII=",
+        ticker = "MARS",
+        cooldownPeriod = 60 * 60 * 24 * 3, -- 3 days in seconds
+        aoethRewardRate = 10,              -- for 1 aoeth, how many tokens of reward
+        founders = {
+            {
+                name = "Alice Johnson",
+                designation = "CEO",
+                photo =
+                "",
+            },
+            {
+                name = "Bob Smith",
+                designation = "CTO",
+                photo =
+                "",
+            },
+        },
+        socials = {
+            website = "https://www.saturn.io",
+            x = "https://x.com/saturn",
+            discord = "https://discord.gg/saturn",
+            github = "https://github.com/saturn",
+        },
+    },
 }
 
 Handlers.add("Get All Projects", function(msg)

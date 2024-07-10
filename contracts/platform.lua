@@ -173,58 +173,58 @@ Handlers.add(
     end
 )
 
-Handlers.add("Unstaking AoETH", Handlers.utils.hasMatchingTag("Action", "unstake"),
-    function(msg)
-       local project = utils.find(function(val) return val.ticker == msg.Tags["X-Ticker"] end)(PROJECTS) 
-       local userTransactions = utils.find(function(val) return val.user == msg.From end)(TRANSACTION)
-       local userProjectTransactions = utils.filter(
-        function(val) 
-            return val.ticker == msg.Tags["X-Ticker"] && val.amtUnstaked 
-        end)(userTransactions.msg)
+-- Handlers.add("Unstaking AoETH", Handlers.utils.hasMatchingTag("Action", "unstake"),
+--     function(msg)
+--        local project = utils.find(function(val) return val.ticker == msg.Tags["X-Ticker"] end)(PROJECTS) 
+--        local userTransactions = utils.find(function(val) return val.user == msg.From end)(TRANSACTION)
+--        local userProjectTransactions = utils.filter(
+--         function(val) 
+--             return val.ticker == msg.Tags["X-Ticker"] and val.amtUnstaked 
+--         end)(userTransactions.msg)
 
-    --    find the latest transaction
-         local latestTxn = utils.reduce(function(acc, val)
-                if (val.date > acc.date) then
-                 return val
-                else
-                 return acc
-                end
-            end, userProjectTransactions[1], userProjectTransactions)
+--     --    find the latest transaction
+--          local latestTxn = utils.reduce(function(acc, val)
+--                 if (val.date > acc.date) then
+--                  return val
+--                 else
+--                  return acc
+--                 end
+--             end, userProjectTransactions[1], userProjectTransactions)
 
 
-        local cooldownPeriod = project.cooldownPeriod
+--         local cooldownPeriod = project.cooldownPeriod
 
-        assert(msg.Timestamp - latestTxn.date < cooldownPeriod, "You cannot unstake before the cooldown period")
+--         assert(msg.Timestamp - latestTxn.date < cooldownPeriod, "You cannot unstake before the cooldown period")
 
-        -- get total amount staked by user
-        local totalAmount = utils.reduce(function(acc, val)
-            local amt = acc + tonumber(val.aoEthQuantity)
-            return amt
-        end, 0, userProjectTransactions)
+--         -- get total amount staked by user
+--         local totalAmount = utils.reduce(function(acc, val)
+--             local amt = acc + tonumber(val.aoEthQuantity)
+--             return amt
+--         end, 0, userProjectTransactions)
         
-        for k, v in ipairs(TRANSACTION) do
-            if (v.user == msg.From) then
-                for i, j in ipairs(TRANSACTION[k].msg) do
-                    if (j.ticker == msg.Tags["X-Ticker"] && ~j.amtUnstaked) then
-                        TRANSACTION[k].msg[i].amtUnstaked = true
-                    end
-                end
-            end
-        end
+--         for k, v in ipairs(TRANSACTION) do
+--             if (v.user == msg.From) then
+--                 for i, j in ipairs(TRANSACTION[k].msg) do
+--                     if (j.ticker == msg.Tags["X-Ticker"] && ~j.amtUnstaked) then
+--                         TRANSACTION[k].msg[i].amtUnstaked = true
+--                     end
+--                 end
+--             end
+--         end
 
-        table.insert(userTransactions.msg, {
-            messageId = msgId,
-            aoEthQuantity = -totalAmount,
-            projectTicker = tags["X-Ticker"],
-            ProjectTokenReceived = "",
-            ptReceived = false,
-            ptSent = false,
-            date = msg.Timestamp
-        })
+--         table.insert(userTransactions.msg, {
+--             messageId = msgId,
+--             aoEthQuantity = -totalAmount,
+--             projectTicker = tags["X-Ticker"],
+--             ProjectTokenReceived = "",
+--             ptReceived = false,
+--             ptSent = false,
+--             date = msg.Timestamp
+--         })
         
 
-    end
-)
+--     end
+-- )
 
 -- Handlers.add("DistributeAO", function(msg)
 --     return msg.Action == "Credit-Notice" and msg.From == PROCESSIDOFAOETH
