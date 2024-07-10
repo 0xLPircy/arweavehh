@@ -52,7 +52,13 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <ArweaveWalletKit
       config={{
-        permissions: ["ACCESS_ADDRESS", "DISPATCH", "ACCESS_ALL_ADDRESSES", "ACCESS_PUBLIC_KEY", "SIGN_TRANSACTION"],
+        permissions: [
+          "ACCESS_ADDRESS",
+          "DISPATCH",
+          "ACCESS_ALL_ADDRESSES",
+          "ACCESS_PUBLIC_KEY",
+          "SIGN_TRANSACTION",
+        ],
         ensurePermissions: true,
       }}
       theme={{
@@ -63,6 +69,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
     >
       <div className="font-[Rale-Regular] min-h-screen flex flex-col justify-between gap-12 lining-figures">
         <Navbar />
+        {/* @ts-ignore */}
         <RouterProvider router={router}>
           <ScrollToTop />
           {router}
