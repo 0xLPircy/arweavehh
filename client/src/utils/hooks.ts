@@ -15,11 +15,11 @@ export function useProjects() {
         anchor: "1234",
       });
       const projects = JSON.parse(result.Messages[0].Data);
+      console.log("got pr", projects);
       setProjects(projects);
     };
     fetch();
   }, []);
-  console.log("got pr", projects);
   return projects;
 }
 
@@ -56,60 +56,107 @@ export function useUserData(address?: string) {
   const [confirmedTransactions, setConfirmedTransactions] = useState<UserTransaction[] | null>(null);
   const [stakedAmounts, setStakedAmounts] = useState<StakedAmounts | null>(null);
 
+  const getNewData = async () => {
+    if (!address) return;
+    const result = await dryrun({
+      process: PLATFORM_PID,
+      Owner: address,
+      tags: [{ name: "Action", value: "Get-User-Data" }],
+      anchor: "1234",
+    });
+    console.log("get user data result", result);
+    const transactions = JSON.parse(result.Messages[0].Data)?.msg ?? [];
+    const pendingTransactions = transactions.filter((t: UserTransaction) => !t.ptSent);
+    const confirmedTransactions = transactions.filter((t: UserTransaction) => t.ptSent && !t.amtUnstaked);
+
+    const stakedAmounts = confirmedTransactions.reduce((acc: StakedAmounts, t: UserTransaction) => {
+      const projectTicker = t.projectTicker;
+      if (!acc[projectTicker]) acc[projectTicker] = { aoeth: 0, projectToken: 0 };
+      acc[projectTicker].aoeth += parseInt(t.aoEthQuantity) / 10 ** 12;
+      acc[projectTicker].projectToken += parseInt(t.ProjectTokenReceived) / 10 ** 12;
+
+      return acc;
+    }, {} as StakedAmounts);
+    setStakedAmounts(stakedAmounts);
+
+    setAllTransactions(transactions);
+    setPendingTransactions(pendingTransactions);
+    setConfirmedTransactions(confirmedTransactions);
+    console.log({ allTransactions, stakedAmounts, confirmedTransactions, pendingTransactions });
+  };
   useEffect(() => {
-    const fetch = async () => {
-      if (!address) return;
-      const result = await dryrun({
-        process: PLATFORM_PID,
-        Owner: address,
-        tags: [{ name: "Action", value: "Get-User-Data" }],
-        anchor: "1234",
-      });
-      console.log("get user data result", result);
-      const transactions = JSON.parse(result.Messages[0].Data)?.msg ?? [];
-      const pendingTransactions = transactions.filter((t: UserTransaction) => !t.ptSent);
-      const confirmedTransactions = transactions.filter((t: UserTransaction) => t.ptSent && !t.amtUnstaked);
-
-      const stakedAmounts = confirmedTransactions.reduce((acc: StakedAmounts, t: UserTransaction) => {
-        const projectTicker = t.projectTicker;
-        if (!acc[projectTicker]) acc[projectTicker] = { aoeth: 0, projectToken: 0 };
-        acc[projectTicker].aoeth += parseInt(t.aoEthQuantity) / 10 ** 12;
-        acc[projectTicker].projectToken += parseInt(t.ProjectTokenReceived) / 10 ** 12;
-
-        return acc;
-      }, {} as StakedAmounts);
-      setStakedAmounts(stakedAmounts);
-
-      setAllTransactions(transactions);
-      setPendingTransactions(pendingTransactions);
-      setConfirmedTransactions(confirmedTransactions);
-    };
-    fetch();
+    getNewData();
   }, [address]);
-  console.log({ allTransactions, stakedAmounts, confirmedTransactions, pendingTransactions });
 
-  return { stakedAmounts, confirmedTransactions, allTransactions, pendingTransactions };
+  const refresh = () => {
+    getNewData();
+  };
+
+  return { refresh, stakedAmounts, confirmedTransactions, allTransactions, pendingTransactions };
 }
 
 export function useUserAoETH(address?: string) {
   const [aoeth, setAoeth] = useState<number | null>(null);
+  const fetchData = async () => {
+    if (!address) return;
+    const result = await dryrun({
+      process: AOETH_TOKEN_PID,
+      tags: [
+        { name: "Action", value: "Balance" },
+        { name: "Recipient", value: address },
+      ],
+      anchor: "1234",
+    });
+    const aoeth = JSON.parse(result.Messages[0].Data);
+    console.log("got aoeth", aoeth);
+    setAoeth(aoeth / 10 ** 12);
+  };
   useEffect(() => {
-    const fetch = async () => {
-      if (!address) return;
-      const result = await dryrun({
-        process: AOETH_TOKEN_PID,
-        tags: [
-          { name: "Action", value: "Balance" },
-          { name: "Recipient", value: address },
-        ],
-        anchor: "1234",
-      });
-      const aoeth = JSON.parse(result.Messages[0].Data);
-      setAoeth(aoeth / 10 ** 12);
-    };
-    fetch();
+    fetchData();
   }, [address]);
-  console.log("got aoeth", aoeth);
 
-  return aoeth;
+  const refresh = () => {
+    fetchData();
+  };
+
+  return { aoeth, refresh };
 }
+
+export const useStakeLoader = (projectData: ProjectType, address?: string) => {
+  const [receivedAoETH, setRecievedAoETH] = useState<boolean>(false);
+  const [projectConfirmedStake, setProjectConfirmedStake] = useState<boolean>(false);
+  const [rewardsSent, setRewardsSent] = useState<boolean>(false);
+
+  const [timer, setTimer] = useState<NodeJS.Timeout | null>(null);
+
+  const start = (startDate: Date) => {
+    setTimer(
+      setInterval(async () => {
+        console.log("checking new data");
+        const result = await dryrun({
+          process: PLATFORM_PID,
+          Owner: address,
+          tags: [{ name: "Action", value: "Get-User-Data" }],
+          anchor: "1234",
+        });
+        const transactions = JSON.parse(result.Messages[0].Data)?.msg ?? [];
+        const currentTrx = transactions.filter((t: UserTransaction) => new Date(t.date) > startDate && t.projectTicker == projectData.ticker);
+        console.log({ transactions, currentTrx });
+        if (currentTrx.length > 0) setRecievedAoETH(true);
+        const ptReceived = transactions.filter((t: UserTransaction) => new Date(t.date) > startDate && t.ptReceived && t.projectTicker == projectData.ticker);
+        if (ptReceived.length > 0) setProjectConfirmedStake(true);
+        const rewardsSent = transactions.filter((t: UserTransaction) => new Date(t.date) > startDate && t.ptSent && t.projectTicker == projectData.ticker);
+        if (rewardsSent.length > 0) setRewardsSent(true);
+      }, 500)
+    );
+  };
+
+  const stop = () => {
+    if (timer) {
+      clearTimeout(timer);
+      setTimer(null);
+    }
+  };
+
+  return { stop, start, receivedAoETH: receivedAoETH, projectConfirmedStake, rewardsSent };
+};

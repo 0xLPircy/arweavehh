@@ -6,9 +6,18 @@ import x from "/icons/x.svg";
 import { ProjectType } from "../types/Project";
 import { stake } from "../utils/stake";
 import { ConnectButton, useActiveAddress } from "arweave-wallet-kit";
+import { useStakeLoader } from "../utils/hooks";
 
 export default function ProjectFull({ project }: { project: ProjectType }) {
   const address = useActiveAddress();
+  const { start, stop, projectConfirmedStake, receivedAoETH: recievedAoETH, rewardsSent } = useStakeLoader(project, address);
+  if (!address) return <div>Connect Wallet</div>;
+
+  console.log({ projectConfirmedStake, recievedAoETH, rewardsSent });
+  if (rewardsSent) {
+    stop();
+    return <div className="text-white">Stake Successful</div>;
+  }
 
   return (
     <div className=" overflow-hidden">
@@ -71,7 +80,14 @@ export default function ProjectFull({ project }: { project: ProjectType }) {
             ipsam voluptatum, ratione error mollitia, saepe architecto.
           </p>
           {address ? (
-            <button onClick={() => stake(project, address)} className="bg-[#40959D] rounded-md px-[24px] py-[3px] w-fit">
+            <button
+              onClick={async () => {
+                const startDate = new Date();
+                await stake(project, address);
+                start(startDate);
+              }}
+              className="bg-[#40959D] rounded-md px-[24px] py-[3px] w-fit"
+            >
               Stake
             </button>
           ) : (

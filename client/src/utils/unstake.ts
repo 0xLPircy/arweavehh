@@ -1,5 +1,5 @@
 import { createDataItemSigner, message, result } from "@permaweb/aoconnect";
-import { AOETH_TOKEN_PID, PLATFORM_PID } from "./constants";
+import { PLATFORM_PID } from "./constants";
 import { ProjectType } from "../types/Project";
 
 export const unstake = async (projectData: ProjectType) => {
@@ -18,12 +18,27 @@ export const unstake = async (projectData: ProjectType) => {
   console.log("Post result", res);
 
   const postResult = await result({
-    process: AOETH_TOKEN_PID,
+    process: PLATFORM_PID,
     message: res,
   });
-
-  console.log({ postResult });
   if (postResult.Error) {
     throw new Error(postResult.Error);
   }
+
+  console.log({ postResult });
+
+  await new Promise((r) => setTimeout(r, 500));
+
+  //   while (postResult.Messages.length < 4) {
+  //     postResult = await result({
+  //       process: PLATFORM_PID,
+  //       message: res,
+  //     });
+  //     if (postResult.Error) {
+  //       throw new Error(postResult.Error);
+  //     }
+  //     console.log("waiting for confirmation", postResult);
+  //     // sleep for 500 ms
+  //     await new Promise((r) => setTimeout(r, 500));
+  //   }
 };

@@ -11,7 +11,6 @@ export default function Project() {
 
   // Get the last segment
   const lastSegment = pathSegments[pathSegments.length - 1];
-  console.log(lastSegment);
   return (
     <main className="w-[100vw] flex flex-col gap-24 font-[Rale-Regular]">
       {projects.map((project) => {

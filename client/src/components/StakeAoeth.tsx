@@ -2,6 +2,7 @@ import { createDataItemSigner, message, result } from "@permaweb/aoconnect";
 import { useActiveAddress } from "arweave-wallet-kit";
 import { AOETH_TOKEN_PID, PLATFORM_PID } from "../utils/constants";
 import { ProjectType } from "../types/Project";
+import { useStakeLoader } from "../utils/hooks";
 
 type StakeAoethProps = {
   projectData: ProjectType;
@@ -9,9 +10,16 @@ type StakeAoethProps = {
 
 export default function StakeAoeth({ projectData }: StakeAoethProps) {
   const address = useActiveAddress();
+  const { start, stop, projectConfirmedStake, receivedAoETH: receivedAoETH, rewardsSent } = useStakeLoader(projectData, address);
   if (!address) return <div>Connect Wallet</div>;
 
   const quantity = 1100000000000;
+
+  console.log({ projectConfirmedStake, receivedAoETH: receivedAoETH, rewardsSent });
+  if (rewardsSent) {
+    stop();
+    return <div className="text-white">Stake Successful</div>;
+  }
 
   const stake = async () => {
     console.log("stake");
@@ -32,6 +40,8 @@ export default function StakeAoeth({ projectData }: StakeAoethProps) {
     });
 
     console.log("Post result", res);
+
+    start(new Date());
 
     const postResult = await result({
       process: AOETH_TOKEN_PID,
