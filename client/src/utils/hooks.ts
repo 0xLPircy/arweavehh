@@ -50,7 +50,7 @@ export function useProjects() {
   useEffect(() => {
     const fetch = async () => {
       const result = await dryrun({
-        process: "Zr44oFbd4i9Tiq7SdoyPzmWxH_k-Fu_KtvbvgOjEv4s",
+        process: PLATFORM_PID,
         tags: [{ name: "Action", value: "Get-Projects" }],
         anchor: "1234",
       });
