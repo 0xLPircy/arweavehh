@@ -11,6 +11,7 @@ import { useState } from "react";
 export default function ProjectFull({ project }: { project: ProjectType }) {
   const address = useActiveAddress();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [step, setStep] = useState("0");
   const [amount, setAmount] = useState("");
   const availableAOEth = 500;
 
@@ -23,10 +24,12 @@ export default function ProjectFull({ project }: { project: ProjectType }) {
   };
   const openModal = () => {
     setIsModalOpen(true);
+    setStep("1");
   };
 
   const closeModal = () => {
     setIsModalOpen(false);
+    setStep("0");
   };
 
   return (
@@ -170,57 +173,99 @@ export default function ProjectFull({ project }: { project: ProjectType }) {
               <p className="text-center">Hello World</p>
             </div> */}
             <div className="relative w-fit max-w-[450px] bg-[#111111] p-8 rounded-lg ">
-              <button
-                onClick={closeModal}
-                className="absolute top-2 right-2 text-xl font-bold text-gray-600 hover:text-gray-900"
-              >
-                &times;
-              </button>
-              <h2 className="text-[30px] font-semibold text-[#f1f1f1]">
-                <span className="text-[#40959D]">Stake </span>$AOEth{" "}
-                <span className="text-[#40959D]">and get </span>
-                $SAT <span className="text-[#40959D]">in return</span>
-              </h2>
-              <div className="mb-6">
-                <div className="text-[#40959D]">
-                  Available $AOEth:{" "}
-                  <span className="font-semibold text-[#f1f1f1] lining-figures">
-                    {availableAOEth}
-                  </span>
-                </div>
-                <h4 className="text-[#8D8D8D] font-[Rale-SemiBold] text-[13.5px]">
-                  Enter quantity of $AOEth to be staked
-                </h4>
-                <div
-                  className="flex items-center justify-between rounded bg-[#1A1A1A] text-[#f1f1f1]
+              {step == "1" && (
+                <>
+                  <button
+                    onClick={closeModal}
+                    className="absolute top-2 right-2 text-xl font-bold text-gray-600 hover:text-gray-900"
+                  >
+                    &times;
+                  </button>
+                  <h2 className="text-[30px] font-semibold text-[#f1f1f1]">
+                    <span className="text-[#40959D]">Stake </span>$AOEth{" "}
+                    <span className="text-[#40959D]">and get </span>
+                    $SAT <span className="text-[#40959D]">in return</span>
+                  </h2>
+                  <div className="mb-6">
+                    <div className="text-[#40959D]">
+                      Available $AOEth:{" "}
+                      <span className="font-semibold text-[#f1f1f1] lining-figures">
+                        {availableAOEth}
+                      </span>
+                    </div>
+                    <h4 className="text-[#8D8D8D] font-[Rale-SemiBold] text-[13.5px]">
+                      Enter quantity of $AOEth to be staked
+                    </h4>
+                    <div
+                      className="flex items-center justify-between rounded bg-[#1A1A1A] text-[#f1f1f1]
                 pl-2"
-                >
-                  <input
-                    type="number"
-                    value={amount}
-                    onChange={handleChange}
-                    // placeholder="Enter quantity of $AOEth to be staked"
-                    className="bg-[#00000000] p-2 w-full h-full"
-                  />
-                  <div className="h-full min-w-fit">
-                    <button
-                      onClick={handleMaxClick}
-                      className="bg-[#111111] border-[2px] border-[#121212] text-white px-3 py-2 rounded min-w-fit m-2"
                     >
-                      GO MAX
-                    </button>
+                      <input
+                        type="number"
+                        value={amount}
+                        onChange={handleChange}
+                        // placeholder="Enter quantity of $AOEth to be staked"
+                        className="bg-[#00000000] p-2 w-full h-full"
+                      />
+                      <div className="h-full min-w-fit">
+                        <button
+                          onClick={handleMaxClick}
+                          className="bg-[#111111] border-[2px] border-[#121212] text-white px-3 py-2 rounded min-w-fit m-2"
+                        >
+                          GO MAX
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="bg-[#1A1A1A] p-4 rounded mb-6 max-w-[75%]">
+                    <p className="text-[#8D8D8D] text-[12px]">
+                      On staking xyz $AOEth you may receive abc of $SAT per day
+                      in your wallet after a cool down period of 24 hours.
+                    </p>
+                  </div>
+                  <button
+                    onClick={() => {
+                      setStep("2");
+                    }}
+                    className="w-fit bg-[#205156] text-[#f1f1f1] py-[6px] px-[18px] rounded"
+                  >
+                    Stake $AOEth
+                  </button>
+                </>
+              )}
+              {step == "2" && (
+                <div className="relative">
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="w-1 h-full bg-teal-300"></div>
+                  </div>
+                  <div className="relative z-10 flex flex-col space-y-6">
+                    <div className="flex items-center">
+                      <div className="flex items-center justify-center w-6 h-6 rounded-full bg-teal-600 text-white">
+                        ✓
+                      </div>
+                      <div className="ml-4 text-teal-300 text-lg">
+                        500 $AOEth staked on saturn
+                      </div>
+                    </div>
+                    <div className="flex items-center">
+                      <div className="flex items-center justify-center w-6 h-6 rounded-full bg-teal-600 text-white">
+                        ✓
+                      </div>
+                      <div className="ml-4 text-teal-300 text-lg">
+                        Saturn received equivalent $AO
+                      </div>
+                    </div>
+                    <div className="flex items-center">
+                      <div className="flex items-center justify-center w-6 h-6 rounded-full border-2 border-teal-600 bg-gray-800 text-white">
+                        <div className="w-3 h-3 bg-teal-600 rounded-full"></div>
+                      </div>
+                      <div className="ml-4 text-white text-lg">
+                        $SAT added in your wallet
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div className="bg-[#1A1A1A] p-4 rounded mb-6 max-w-[75%]">
-                <p className="text-[#8D8D8D] text-[12px]">
-                  On staking xyz $AOEth you may receive abc of $SAT per day in
-                  your wallet after a cool down period of 24 hours.
-                </p>
-              </div>
-              <button className="w-fit bg-[#205156] text-[#f1f1f1] py-[6px] px-[18px] rounded">
-                Stake $AOEth
-              </button>
+              )}
             </div>
           </div>
         )}
