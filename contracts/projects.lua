@@ -7,27 +7,24 @@ PROJECTS = PROJECTS or {
     {
         process = constants.SATURN_PID,
         tokenProcess = constants.SATURN_TOKEN_PID,
-        id = "sat",
+        id = "SATP",
         amountStaked = 0,
         name = "Saturn",
         description = "A revolutionary project aiming to explore the outer limits of blockchain technology.",
-        logo =
-        "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/wcAAgEBALqlU/cAAAAASUVORK5CYII=",
-        ticker = "SAT",
+        logo ="https://arweavehh.vercel.app//SATP.svg",
+        ticker = "SATP",
         cooldownPeriod = 60,  -- 60 seconds
         aoethRewardRate = 10, -- for 1 aoeth, how many tokens of reward
         founders = {
             {
                 name = "Alice Johnson",
                 designation = "CEO",
-                photo =
-                "",
+                photo ="https://arweavehh.vercel.app/founders/saturnfounder1.png",
             },
             {
                 name = "Bob Smith",
                 designation = "CTO",
-                photo =
-                "",
+                photo ="https://arweavehh.vercel.app/founders/saturnfounder2.png
             },
         },
         socials = {
@@ -38,36 +35,63 @@ PROJECTS = PROJECTS or {
         },
     },
     {
-        process = "-XmuU-RfMRBRu4GjzX7v5SWlBGZhsY",
-        tokenProcess = "1mCv9ODdJsHWhxVVhckX7uewWpgWakSaTot6Y",
-        id = "mar",
+        process = "BaMK1dfayo75s3q1ow6AO64UDpD9SEFbeE8xYrY2fyQ",
+        tokenProcess = "BUhZLMwQ6yZHguLtJYA5lLUa9LQzLXMXRfaq9FVcPJc",
+        id = "ORBT",
         amountStaked = 0,
-        name = "Mars",
-        description = "A revolutionary project aiming to explore the outer limits of blockchain technology.",
-        logo =
-        "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/wcAAgEBALqlU/cAAAAASUVORK5CYII=",
-        ticker = "MARS",
+        name = "0rbit",
+        description = "Decentralized Oracle Network on Arweave | Get ACCESS to LIMITLESS DATA",
+        logo ="https://arweavehh.vercel.app/0RBT.svg",
+        ticker = "0RBT",
         cooldownPeriod = 60 * 60 * 24 * 3, -- 3 days in seconds
-        aoethRewardRate = 10,              -- for 1 aoeth, how many tokens of reward
+        aoethRewardRate = 30,              -- for 1 aoeth, how many tokens of reward
         founders = {
             {
-                name = "Alice Johnson",
-                designation = "CEO",
-                photo =
-                "",
+                name = "Lucifer0x17",
+                designation = "Founder",
+                photo ="",
             },
             {
-                name = "Bob Smith",
-                designation = "CTO",
-                photo =
-                "",
+                name = "Megabyte",
+                designation = "Co-Founder",
+                photo ="",
             },
         },
         socials = {
-            website = "https://www.saturn.io",
-            x = "https://x.com/saturn",
-            discord = "https://discord.gg/saturn",
-            github = "https://github.com/saturn",
+            website = "https://www.0rbit.co",
+            x = "https://twitter.com/0rbitco",
+            discord = "https://discord.gg/JVSjqaKJgV",
+            github = "https://github.com/0rbit-co",
+        },
+    },
+    {
+        process = "UdPDhw5S7pByV3pVqwyr1qzJ8mR8ktzi9olgsdsyZz4",
+        tokenProcess = "UdPDhw5S7pByV3pVqwyr1qzJ8mR8ktzi9olgsdsyZz4",
+        id = "NEO",
+        amountStaked = 0,
+        name = "BetterIDEa",
+        description = "One stop env for devs on Arweave",
+        logo ="https://arweavehh.vercel.app/NEO.svg",
+        ticker = "NEO",
+        cooldownPeriod = 60 * 60 * 24 * 3, -- 3 days in seconds
+        aoethRewardRate = 30,              -- for 1 aoeth, how many tokens of reward
+        founders = {
+            {
+                name = "Ankush",
+                designation = "Founder",
+                photo ="https://arweavehh.vercel.app/founders/betterideafounder1.png",
+            },
+            {
+                name = "Farat",
+                designation = "Principle Designer",
+                photo ="https://arweavehh.vercel.app/founders/betterideafound2.png",
+            },
+        },
+        socials = {
+            website = "https://betteridea.dev/",
+            x = "https://twitter.com/betteridea_dev",
+            discord = "https://discord.gg/nm6VKUQBrA",
+            github = "https://github.com/ankushKun/betteride",
         },
     },
 }

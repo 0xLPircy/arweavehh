@@ -40,9 +40,11 @@ const Hero = () => {
             Add your project
           </button>
         </Link>
-        <button className="hover:bg-[#40959ddf] hover:tracking-wider rounded-md w-[180px] py-[9px] bg-[#40959D]">
-          Explore Projects
-        </button>
+        <a href="https://github.com/0xLPircy/arweavehh">
+          <button className="hover:bg-[#40959ddf] hover:tracking-wider rounded-md w-[180px] py-[9px] bg-[#40959D]">
+            Explore
+          </button>
+        </a>
       </div>
     </section>
   );

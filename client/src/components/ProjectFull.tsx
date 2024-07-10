@@ -65,7 +65,7 @@ export default function ProjectFull({ project }: { project: ProjectType }) {
     <div className=" overflow-hidden">
       <div className="h-48 bg-gray-300 relative">
         <div className="absolute inset-x-0 top-full -mt-10 flex justify-center">
-          <div className="h-20 w-20 bg-gray-400 rounded-full"></div>
+          <img src={project.logo} className="h-20, w-20" />
         </div>
       </div>
       <div className="px-20 flex flex-col gap-[30px] pt-[30px]">
@@ -190,7 +190,7 @@ export default function ProjectFull({ project }: { project: ProjectType }) {
         </div>
 
         {isModalOpen && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center w-full h-full bg-black bg-opacity-50 backdrop-blur-sm">
+          <div className="fixed inset-0 z-50 flex items-center justify-center w-full h-full bg-[#626262] bg-opacity-50 backdrop-blur-sm">
             <div className="relative w-fit max-w-[450px] bg-[#111111] p-8 rounded-lg ">
               <button
                 onClick={closeModal}

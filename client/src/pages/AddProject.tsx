@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import { addProject } from "../utils/hooks";
+import { useConnection } from "arweave-wallet-kit";
 
 const AddProject = () => {
+  const { connected } = useConnection();
   const [projectName, setProjectName] = useState("");
   const [projectDescription, setProjectDescription] = useState("");
   const [tokenName, setTokenName] = useState("");
@@ -238,7 +240,10 @@ const AddProject = () => {
         onClick={() => {
           addProjectHandler();
         }}
-        className="w-full bg-[#40959D] text-white py-3 rounded"
+        disabled={!connected}
+        className={`w-full bg-[#40959D] text-white py-3 rounded ${
+          !connected ? "hover:cursor-not-allowed" : "cursor-pointer"
+        }`}
       >
         Post my project
       </button>
