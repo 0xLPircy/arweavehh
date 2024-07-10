@@ -135,8 +135,8 @@ PROJECTS = {
         id = "SAM",
         amountStaked = 0,
         name = "Smart Auditing and Monitoring",
-        description = "Vulnerabilities auditing on us, contracting is on you"
-        logo = "https://arweavehh.vercel.app/VCOIN.jpeg",
+        description = "Vulnerabilities auditing on us, contracting is on you",
+        logo = "https://arweavehh.vercel.app/vite.svg",
         ticker = "SAM",
         cooldownPeriod = 60 * 60 * 24 * 3, -- 3 days in seconds
         aoethRewardRate = 30,              -- for 1 aoeth, how many tokens of reward
@@ -157,9 +157,9 @@ PROJECTS = {
                 photo = "",
             },
             {
-                name="Haard Solanki",
-                designation="Developer",
-                photo=""
+                name = "Haard Solanki",
+                designation = "Developer",
+                photo = ""
             }
         },
         socials = {
@@ -174,43 +174,28 @@ PROJECTS = {
         tokenProcess = "-",
         id = "SAM",
         amountStaked = 0,
-        name = "Smart Auditing and Monitoring",
-        description = "Vulnerabilities auditing on us, contracting is on you"
-        logo = "https://arweavehh.vercel.app/VCOIN.jpeg",
+        name = "The LOOM",
+        description = "A Metaverse on AO",
+        logo = "https://arweavehh.vercel.app/loom.jpeg",
         ticker = "SAM",
         cooldownPeriod = 60 * 60 * 24 * 3, -- 3 days in seconds
         aoethRewardRate = 30,              -- for 1 aoeth, how many tokens of reward
         founders = {
             {
-                name = "Sidarth Manjun",
+                name = "Mystic",
                 designation = "Developer",
                 photo = "",
             },
-            {
-                name = "Sai Rupa Netha Yarramada",
-                designation = "Designer",
-                photo = "",
-            },
-            {
-                name = "Kunal Garg",
-                designation = "Developer",
-                photo = "",
-            },
-            {
-                name="Haard Solanki",
-                designation="Developer",
-                photo=""
-            }
         },
         socials = {
             website = "",
-            x = "solanki_haard",
+            x = "mystic",
             discord = "",
             github = "github.com/haard18",
         },
     },
 }
-}
+
 
 Handlers.add("Get All Projects", function(msg)
         return msg.Action == "Get-Projects"
