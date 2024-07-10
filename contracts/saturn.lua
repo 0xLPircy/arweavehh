@@ -3,7 +3,7 @@
 
 local constants = require("constants")
 
-_SATP_VAL = 0.5
+_SATP_VAL = 10
 Ticker = "SAT"
 _SATP_TOKEN = constants.SATURN_TOKEN_PID
 

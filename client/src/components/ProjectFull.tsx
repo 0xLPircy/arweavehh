@@ -93,7 +93,7 @@ export default function ProjectFull({ project }: { project: ProjectType }) {
                   <img
                     src={founderData.photo}
                     alt={founderData.name}
-                    className="h-16 w-16 rounded-full object-scale-down"
+                    className="h-16 w-16 rounded-full object-cover"
                   />
                   <p className="text-[#40959D] font-[Rale-Bold]">
                     {founderData.name}

@@ -3,7 +3,7 @@ local utils = require(".utils")
 local constants = require("constants")
 
 -- TODO: save variable when adding new projects dynamically
-PROJECTS = PROJECTS or {
+PROJECTS = {
     {
         process = constants.SATURN_PID,
         tokenProcess = constants.SATURN_TOKEN_PID,
@@ -11,7 +11,7 @@ PROJECTS = PROJECTS or {
         amountStaked = 0,
         name = "Saturn",
         description = "A revolutionary project aiming to explore the outer limits of blockchain technology.",
-        logo = "https://arweavehh.vercel.app//SATP.svg",
+        logo = "https://arweavehh.vercel.app/SATP.svg",
         ticker = "SATP",
         cooldownPeriod = 60,  -- 60 seconds
         aoethRewardRate = 10, -- for 1 aoeth, how many tokens of reward
@@ -49,12 +49,12 @@ PROJECTS = PROJECTS or {
             {
                 name = "Lucifer0x17",
                 designation = "Founder",
-                photo = "https://arweavehh.vercel.app/0rbitfounder1.png",
+                photo = "https://arweavehh.vercel.app/founders/0rbitfounder1.png",
             },
             {
                 name = "Megabyte",
                 designation = "Co-Founder",
-                photo = "https://arweavehh.vercel.app/0rbitfounder2.png",
+                photo = "https://arweavehh.vercel.app/founders/0rbitfounder2.png",
             },
         },
         socials = {
@@ -101,7 +101,7 @@ PROJECTS = PROJECTS or {
         amountStaked = 0,
         name = "AOVest",
         description = "Token Vesting for projects to implement streaming of their tokens",
-        logo = "",
+        logo = "https://arweavehh.vercel.app/VCOIN.jpeg",
         ticker = "VCOIN",
         cooldownPeriod = 60 * 60 * 24 * 3, -- 3 days in seconds
         aoethRewardRate = 30,              -- for 1 aoeth, how many tokens of reward
