@@ -194,6 +194,37 @@ PROJECTS = {
             github = "github.com/haard18",
         },
     },
+    {
+        process = "RdiOs7wNV7g-rZfb2IpnnrzTAMpljSwZZRNQOx8-cR8",
+        tokenProcess = "RdiOs7wNV7g-rZfb2IpnnrzTAMpljSwZZRNQOx8-cR8",
+        id = "REBEL",
+        amountStaked = 0,
+        name = "Rebel",
+        description =
+        "Session based Web3 Cloud Gamming Infrastructure focused on providing quality experience to all users",
+        logo = "https://arweavehh.vercel.app/rebel.png",
+        ticker = "NAP",
+        cooldownPeriod = 60 * 60 * 24 * 3, -- 3 days in seconds
+        aoethRewardRate = 30,              -- for 1 aoeth, how many tokens of reward
+        founders = {
+            {
+                name = "Nisarg Thakkar",
+                designation = "Developer",
+                photo = "",
+            },
+            {
+                name = "Pawan AK",
+                designation = "Developer",
+                photo = "",
+            },
+        },
+        socials = {
+            website = "https://arweave-web.vercel.app",
+            x = "",
+            discord = "",
+            github = "",
+        },
+    },
 }
 
 
