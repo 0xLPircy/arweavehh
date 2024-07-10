@@ -1,5 +1,7 @@
 // import HeroStats from "./HeroStats";
 
+import { Link } from "react-router-dom";
+
 const Hero = () => {
   return (
     <section className="w-[100vw] text-[#eeeeee] flex flex-col justify-center items-center px-20 pt-[15px] pb-[90px]">
@@ -33,11 +35,11 @@ const Hero = () => {
         </div> */}
       </div>
       <div className="flex flex-row gap-6 fadeIn pt-9">
-        <a href="/addProject">
+        <Link to="/addProject">
           <button className="hover:bg-[#40959d36] hover:tracking-wider rounded-md w-[180px] py-[9px] border-[1px] border-[#40959D]">
             Add your project
           </button>
-        </a>
+        </Link>
         <button className="hover:bg-[#40959ddf] hover:tracking-wider rounded-md w-[180px] py-[9px] bg-[#40959D]">
           Explore Projects
         </button>
