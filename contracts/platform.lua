@@ -31,7 +31,39 @@ TRANSACTION = TRANSACTION or {}
 
 
 
-
+Handlers.add(
+    "AddNewProject",
+    Handlers.utils.hasMatchingTag("Action", "Add-New-Project"),
+    function(msg)
+        local tags = msg.Tags
+        table.insert(PROJECTS, { 
+                process = tags["X-Process"],
+                tokenProcess = tags["X-TokenProcess"],
+                id = tags["X-Ticker"],
+                amountStaked = 0,
+                name = tags["X-Name"],
+                description =tags["X-Description"],
+                logo =
+                "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/wcAAgEBALqlU/cAAAAASUVORK5CYII=",
+                ticker = tags["X-Ticker"],
+                cooldownPeriod = tags["X-Cooldown"],  -- 60 seconds
+                aoethRewardRate = tags["X-Conversion"], -- for 1 aoeth, how many tokens of reward
+                founders = {
+                    {
+                        name = tags["X-FounderName"],
+                        designation = tags["X-FounderDesignation"],
+                        photo ="",
+                    }
+                },
+                socials = {
+                    website = tags["X-Website"],
+                    x = tags["X-Twitter"],
+                    discord = tags["X-Discord"],
+                    github = tags["X-Github"],
+                },
+        })
+    end
+)
 
 -- Get Handers
 

@@ -7,6 +7,7 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Project from "./pages/Project.tsx";
 import { Navbar, Footer } from "./components";
 import User from "./pages/User.tsx";
+import AddProject from "./pages/AddProject.tsx";
 
 const router = createBrowserRouter([
   {
@@ -20,6 +21,10 @@ const router = createBrowserRouter([
   {
     path: "/profile",
     element: <User />,
+  },
+  {
+    path: "/addProject",
+    element: <AddProject />,
   },
 ]);
 
