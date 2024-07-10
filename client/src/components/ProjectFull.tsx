@@ -136,14 +136,11 @@ export default function ProjectFull({ project }: { project: ProjectType }) {
         {isModalOpen && (
           <div className="fixed inset-0 z-50 flex items-center justify-center w-full h-full bg-[#626262] bg-opacity-50 backdrop-blur-sm">
             <div className="relative w-fit max-w-[450px] bg-[#111111] p-8 rounded-lg ">
-              <button onClick={closeModal} className="absolute top-2 right-2 text-xl font-bold text-gray-600 hover:text-gray-900">
+              <button onClick={closeModal} className="absolute top-2 right-4 text-2xl font-bold text-gray-500 hover:text-gray-600">
                 &times;
               </button>
               {step == "1" && (
                 <>
-                  <button onClick={closeModal} className="absolute top-2 right-2 text-2xl font-bold text-gray-500 hover:text-gray-600">
-                    &times;
-                  </button>
                   <h2 className="text-[30px] font-semibold text-[#f1f1f1]">
                     <span className="text-[#40959D]">Stake </span>$AOEth, <span className="text-[#40959D]"> Get </span>${project.ticker}{" "}
                     {/* <span className="text-[#40959D]">in return</span> */}
