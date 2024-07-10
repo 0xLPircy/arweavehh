@@ -76,7 +76,7 @@ export default function ProjectFull({ project }: { project: ProjectType }) {
             {project.founders.map((founderData) => {
               return (
                 <div className="flex flex-col items-center gap-[6px]">
-                  <img src={founderData.photo} alt={founderData.name} className="h-16 w-16 rounded-full object-scale-down" />
+                  <img src={founderData.photo} alt={founderData.name} className="h-16 w-16 rounded-full object-cover" />
                   <p className="text-[#40959D] font-[Rale-Bold]">{founderData.name}</p>
                   <p className="text-[#f1f1f1]">{founderData.designation}</p>
                 </div>
